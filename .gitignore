@@ -1,0 +1,36 @@
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Python tooling
+.pytest_cache/
+
+# Local runtime state
+*.db
+*.db.bak
+*.bak
+*.log
+logs/
+backend/logs/
+
+# Frontend build artifacts
+frontend/dist/
+frontend/node_modules/
+
+# Local env/config
+.env
+.env.*
+!.env.example
+!frontend/.env.example
+!frontend/.env.development
+!frontend/.env.production
+
+# Python virtual env
+backend/.venv/
+.venv/
+
+# Claude Code local state
+.claude/
+
+# Local tool state
+.deepeval/
