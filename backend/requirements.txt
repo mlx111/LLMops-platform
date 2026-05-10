@@ -1,0 +1,11 @@
+fastapi>=0.111.0
+uvicorn>=0.30.0
+sqlalchemy>=2.0.0
+pydantic>=2.0.0
+celery>=5.4.0
+redis>=5.0.0
+alembic>=1.13.0
+python-dotenv>=1.0.0
+deepeval
+tiktoken
+cryptography>=42.0.0
