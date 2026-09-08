@@ -34,3 +34,12 @@ backend/.venv/
 
 # Local tool state
 .deepeval/
+
+# Docker local env (contains Fernet ENCRYPTION_KEY — never commit)
+docker.env
+
+# Personal notes (interview prep / problem notes — not part of the project)
+INTERVIEW_PREP.md
+INTERVIEW_PREP.txt
+面试.txt
+problem.md

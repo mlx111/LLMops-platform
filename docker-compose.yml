@@ -1,0 +1,68 @@
+# LLMOps 评测与监控平台 —— 一键启动
+# 使用：docker compose up -d --build
+# 访问：前端 http://localhost:5173 ，后端文档 http://localhost:8000/docs
+services:
+  redis:
+    image: docker.1ms.run/library/redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    env_file:
+      - docker.env
+    environment:
+      DATABASE_URL: sqlite:////app/data/llmops.db
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+      CORS_ORIGINS: "*"
+    volumes:
+      - backend-data:/app/data
+      # demo_data 位于项目根目录，seed.py 从 /demo_data 读取初始化评测集
+      - ./demo_data:/demo_data:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  # Celery worker：与 backend 共用同一镜像，负责异步执行评测任务
+  worker:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    command: ["celery", "-A", "app.tasks.celery_app:celery_app", "worker", "--loglevel=info"]
+    env_file:
+      - docker.env
+    environment:
+      DATABASE_URL: sqlite:////app/data/llmops.db
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/1
+      CELERY_RESULT_BACKEND: redis://redis:6379/2
+    volumes:
+      - backend-data:/app/data
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: unless-stopped
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+
+volumes:
+  redis-data:
+  backend-data:

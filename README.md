@@ -4,7 +4,24 @@
 
 ## 快速启动
 
-### Windows
+### Docker 一键启动（推荐）
+
+无需本机安装 Python/Node/Redis，只需 Docker Desktop：
+
+```bash
+docker compose up -d --build
+```
+
+启动后访问：
+
+- 前端控制台：http://localhost:5173
+- 后端 API 文档：http://localhost:8000/docs
+
+编排包含 4 个服务：backend（FastAPI）、worker（Celery 异步评测）、redis（broker/缓存/SSE Pub-Sub）、frontend（nginx 托管 React 构建产物，反向代理 `/api` 并支持 SSE 长连接）。首次启动自动建表并写入 55 条 demo 评测集（QA/RAG/Tool Calling/Multi-turn）。
+
+> 加密 API Key 的 Fernet 密钥放在 `docker.env`（本地演示用，生产部署请用 `python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"` 重新生成）。
+
+### Windows（本地裸跑）
 
 双击 `start-windows.bat`，或命令行执行：
 
@@ -63,6 +80,38 @@ start-windows.bat
 ```
 
 demo 数据在 `demo_data/` 目录下，可直接导入测试。
+
+#### Agent Trajectory 用例
+
+`case_type` 可设置为 `agent_trajectory`，用于评测 Agent 执行轨迹。`reference_answer` 填写期望轨迹，目标系统返回的 `answer/output/response` 可以是同结构 JSON，核心格式如下：
+
+```json
+{
+  "success": true,
+  "steps": [
+    {
+      "type": "tool_call",
+      "tool_name": "search_papers",
+      "tool_args": {"query": "agent evaluation"}
+    },
+    {
+      "type": "tool_call",
+      "tool_name": "get_paper_abstract",
+      "tool_args": {"paper_id": "p1"}
+    },
+    {"type": "final", "content": "summary"}
+  ]
+}
+```
+
+当前内置四个确定性指标：
+
+| 指标 | 说明 |
+|---|---|
+| `TaskSuccess` | 轨迹是否完成任务 |
+| `ToolSelectionAccuracy` | 期望工具是否被调用 |
+| `ArgumentAccuracy` | 期望工具参数是否匹配 |
+| `StepEfficiency` | 是否存在额外无效工具调用 |
 
 ### 3. 实验配置
 

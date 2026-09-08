@@ -1,9 +1,10 @@
 """Evaluation runner. Supports DeepSeek, OpenAI, DashScope, Anthropic, Ollama + Demo mode."""
 
-import base64
+import json
 import os
 import re
 import time
+from typing import Any
 
 from app.services.logger import logger
 
@@ -23,18 +24,24 @@ METRIC_MAP = {
     "rag": ["Faithfulness", "AnswerRelevancy", "ContextRecall", "ContextPrecision"],
     "tool_calling": ["ToolCorrectness", "ArgumentAccuracy"],
     "multi_turn": ["TaskCompletion"],
+    "agent_trajectory": [
+        "TaskSuccess",
+        "ToolSelectionAccuracy",
+        "ArgumentAccuracy",
+        "StepEfficiency",
+    ],
 }
 
 
 def _get_key_from_db(provider: str) -> dict | None:
     """Read API key config from database."""
     from app.database import SessionLocal
-    from app.models.apikey import APIKey
+    from app.models.apikey import APIKey, _decode
     db = SessionLocal()
     try:
         key = db.query(APIKey).filter(APIKey.provider == provider).first()
         if key:
-            raw = base64.b64decode(key.api_key.encode()).decode()
+            raw = _decode(key.api_key)
             return {
                 "api_key": raw,
                 "base_url": key.base_url,
@@ -115,6 +122,18 @@ def count_tokens(text: str, model: str | None = None) -> int:
         except Exception:
             _tiktoken_available = False
     return max(1, len(text) // 3)
+
+
+def _stringify_for_tokens(value) -> str:
+    """Convert structured values to stable text for token accounting."""
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value
+    try:
+        return json.dumps(value, ensure_ascii=False, sort_keys=True)
+    except TypeError:
+        return str(value)
 
 
 # ---------- Demo mode ----------
@@ -204,6 +223,11 @@ def _run_demo(
     case_input, actual_output, case_type, reference_answer,
     retrieval_context, expected_tool, actual_tool, expected_args, actual_args,
 ) -> dict:
+    if case_type == "agent_trajectory":
+        from app.services.agent_metrics import evaluate_agent_trajectory
+
+        return {"scores": evaluate_agent_trajectory(actual_output, reference_answer)}
+
     metric_names = METRIC_MAP.get(case_type, ["AnswerRelevancy"])
     contexts = retrieval_context or []
     ref = reference_answer or ""
@@ -328,9 +352,9 @@ def _run_deepeval(
 
 def run_case_evaluation(
     case_input: str,
-    actual_output: str,
+    actual_output: Any,
     case_type: str = "qa",
-    reference_answer: str | None = None,
+    reference_answer: Any = None,
     retrieval_context: list[str] | None = None,
     expected_tool: str | None = None,
     actual_tool: str | None = None,
@@ -361,16 +385,16 @@ def run_case_evaluation(
     elapsed = int((time.time() - start) * 1000)
 
     # Count tokens: case input + retrieval context + reference
-    input_parts = [case_input, reference_answer or ""]
+    input_parts = [_stringify_for_tokens(case_input), _stringify_for_tokens(reference_answer)]
     if retrieval_context:
-        input_parts.extend(retrieval_context)
+        input_parts.extend(_stringify_for_tokens(item) for item in retrieval_context)
     if expected_tool:
-        input_parts.append(expected_tool)
+        input_parts.append(_stringify_for_tokens(expected_tool))
     if expected_args:
-        input_parts.append(str(expected_args))
+        input_parts.append(_stringify_for_tokens(expected_args))
     input_text = "\n".join(input_parts)
 
-    output_tokens = count_tokens(actual_output, model)
+    output_tokens = count_tokens(_stringify_for_tokens(actual_output), model)
     # Input tokens sent to target system (case input + context + reference)
     input_tokens = count_tokens(input_text, model)
 
