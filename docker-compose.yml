@@ -25,6 +25,10 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/1
       CELERY_RESULT_BACKEND: redis://redis:6379/2
       CORS_ORIGINS: "*"
+      # 允许评测目标指向宿主机/内网自建 Agent（SSRF 防护的可信白名单，逗号分隔）
+      LLMOPS_TARGET_ALLOWLIST: "host.docker.internal"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - backend-data:/app/data
       # demo_data 位于项目根目录，seed.py 从 /demo_data 读取初始化评测集
@@ -48,6 +52,9 @@ services:
       REDIS_URL: redis://redis:6379/0
       CELERY_BROKER_URL: redis://redis:6379/1
       CELERY_RESULT_BACKEND: redis://redis:6379/2
+      LLMOPS_TARGET_ALLOWLIST: "host.docker.internal"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - backend-data:/app/data
     depends_on:

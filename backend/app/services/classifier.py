@@ -135,7 +135,8 @@ def _args_match(actual: dict, expected: dict) -> bool:
 
 def _has_format_violation(output: str, case: EvalCase) -> bool:
     """Check for obvious format/length constraint violations."""
-    if not output:
+    if not isinstance(output, str) or not output:
+        # 轨迹评测的 actual_output 是 dict/list，跳过纯文本格式检查
         return False
     output_lower = output.lower()
     # Common constraint violation patterns

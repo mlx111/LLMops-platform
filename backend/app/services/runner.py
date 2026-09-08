@@ -365,7 +365,16 @@ def run_case_evaluation(
 ) -> dict:
     start = time.time()
 
-    if _has_api_key(provider, model_override=model):
+    if case_type == "agent_trajectory":
+        # Trajectory metrics (TaskSuccess / ToolSelectionAccuracy /
+        # ArgumentAccuracy / StepEfficiency) are deterministic and never use an
+        # LLM judge, so they must not be routed to DeepEval (which has no
+        # equivalent metrics and would return empty scores).
+        from app.services.agent_metrics import evaluate_agent_trajectory
+
+        logger.debug("Evaluating agent trajectory with deterministic metrics")
+        result = {"scores": evaluate_agent_trajectory(actual_output, reference_answer)}
+    elif _has_api_key(provider, model_override=model):
         logger.debug(f"Evaluating with DeepEval: provider={provider}, model={model}, case_type={case_type}")
         result = _run_deepeval(
             case_input, actual_output, case_type,

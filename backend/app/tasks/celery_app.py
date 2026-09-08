@@ -121,7 +121,7 @@ def _evaluate_single_case(
                 "case_type": case_type,
             },
         ) as step:
-            actual_output, actual_tool, actual_args, target_latency, target_tokens = _call_target_system(case, config)
+            actual_output, actual_tool, actual_args, target_latency, target_tokens, trajectory = _call_target_system(case, config)
             tracer.set_step_output(
                 step.id,
                 {
@@ -129,6 +129,7 @@ def _evaluate_single_case(
                     "output_length": len(actual_output),
                     "tool_called": actual_tool,
                     "latency_ms": target_latency,
+                    "trajectory_steps": (trajectory or {}).get("steps", []),
                 },
                 tokens=target_tokens,
             )
@@ -139,9 +140,13 @@ def _evaluate_single_case(
             "LLM",
             input_data={"provider": provider, "model": model, "case_type": case_type},
         ) as step:
+            # For trajectory eval, pass the structured steps dict as actual output.
+            actual_for_eval = (
+                trajectory if (case_type == "agent_trajectory" and trajectory) else actual_output
+            )
             eval_result = run_case_evaluation(
                 case_input=case_input,
-                actual_output=actual_output,
+                actual_output=actual_for_eval,
                 case_type=case_type,
                 reference_answer=reference_answer,
                 retrieval_context=reference_context_ids or [],
@@ -158,11 +163,17 @@ def _evaluate_single_case(
                 tokens=eval_result.get("input_tokens", 0) + eval_result.get("output_tokens", 0),
             )
 
-        result.actual_output = eval_result["actual_output"]
+        stored_output = eval_result["actual_output"]
+        if isinstance(stored_output, (dict, list)):
+            stored_output = json.dumps(stored_output, ensure_ascii=False)
+        result.actual_output = stored_output
         result.actual_tool = actual_tool
         result.actual_args = actual_args
         result.scores = eval_result["scores"]
-        result.latency_ms = eval_result["latency_ms"]
+        # End-to-end latency = target system response time (+ any judge time).
+        # For deterministic agent_trajectory metrics the judge latency is ~0,
+        # so the meaningful figure is the real target/agent response latency.
+        result.latency_ms = target_latency + (eval_result.get("latency_ms") or 0)
         result.input_tokens = eval_result["input_tokens"]
         result.output_tokens = eval_result["output_tokens"]
 
@@ -391,10 +402,14 @@ def _simulate_output(case) -> str:
     return f"Answer to: {case.input[:80]}"
 
 
-def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | None, int, int]:
+def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | None, int, int, dict | None]:
     """
     Call the target RAG/Agent system to get actual output.
-    Returns (actual_output, actual_tool, actual_args, latency_ms, token_estimate).
+    Returns (actual_output, actual_tool, actual_args, latency_ms, token_estimate, trajectory).
+
+    ``trajectory`` is a dict ``{"success": bool, "steps": [...], "final_answer": str}``
+    when the target reports an agent step list (used for agent_trajectory eval);
+    otherwise ``None``.
 
     Falls back to _simulate_output if no target_url is configured.
     """
@@ -405,7 +420,7 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
     target_url = (config or {}).get("target_url")
     if not target_url:
         output = _simulate_output(case)
-        return output, None, None, 0, count_tokens(output, model)
+        return output, None, None, 0, count_tokens(output, model), None
 
     validate_target_url(target_url)
 
@@ -413,6 +428,11 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
         "query": case.input,
         "case_type": case.case_type,
     }
+    # 透传 agent 模式（quick/deep）：目标系统据此选择对应 agent；
+    # 缺失时由目标系统自行推断（agent_trajectory 默认走 deep）。
+    meta = getattr(case, "extra_metadata", None) or {}
+    if isinstance(meta, dict) and meta.get("mode"):
+        payload["mode"] = meta["mode"]
     if case.expected_tool:
         payload["tools"] = [case.expected_tool]
     if case.reference_context_ids:
@@ -441,9 +461,20 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
     actual_output = data.get("answer") or data.get("output") or data.get("response") or ""
     actual_tool = data.get("tool_called") or data.get("tool")
     actual_args = data.get("tool_args") or data.get("arguments")
+
+    # Collect the agent trajectory (tool-call steps) when the target reports one.
+    trajectory: dict | None = None
+    steps = data.get("steps")
+    if isinstance(steps, list) and steps:
+        trajectory = {
+            "success": bool(data.get("success", True)),
+            "steps": steps,
+            "final_answer": actual_output,
+        }
+
     total_tokens = count_tokens(str(payload), model) + count_tokens(actual_output, model)
 
-    return actual_output, actual_tool, actual_args, elapsed_ms, total_tokens
+    return actual_output, actual_tool, actual_args, elapsed_ms, total_tokens, trajectory
 
 
 def _classify_failure(

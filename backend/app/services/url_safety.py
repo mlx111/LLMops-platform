@@ -1,12 +1,31 @@
 import ipaddress
+import os
 import socket
 from urllib.parse import urlparse
 
 from requests.adapters import HTTPAdapter
 
 
+def _target_allowlist() -> set[str]:
+    """Hostnames explicitly trusted as evaluation targets (comma-separated env var).
+
+    Lets the platform reach internal/self-hosted agents (e.g. host.docker.internal)
+    without weakening SSRF protection for arbitrary external URLs.
+    """
+    raw = os.getenv("LLMOPS_TARGET_ALLOWLIST", "")
+    return {h.strip().lower() for h in raw.split(",") if h.strip()}
+
+
+def _is_allowed_host(host: str) -> bool:
+    return host.strip().lower() in _target_allowlist()
+
+
 def validate_target_url(url: str | None) -> None:
-    """Validate a target URL and reject localhost/internal destinations."""
+    """Validate a target URL and reject localhost/internal destinations.
+
+    Hosts listed in LLMOPS_TARGET_ALLOWLIST bypass the internal-IP block so the
+    platform can evaluate trusted self-hosted agents on the internal network.
+    """
     if not url:
         return
 
@@ -15,6 +34,9 @@ def validate_target_url(url: str | None) -> None:
         raise ValueError(f"Unsupported URL scheme: '{parsed.scheme}'")
 
     host = parsed.hostname or ""
+    if _is_allowed_host(host):
+        return
+
     if host in ("localhost", "127.0.0.1", "0.0.0.0", "::1"):
         raise ValueError("Localhost URLs are not allowed")
 
@@ -122,6 +144,11 @@ class ValidatingHTTPAdapter(HTTPAdapter):
     """
 
     def send(self, request, **kwargs):
+        host = urlparse(request.url).hostname or ""
+        if _is_allowed_host(host):
+            # Trusted internal target: connect to the hostname directly without
+            # DNS-rebinding IP pinning (the hostname may be a Docker alias).
+            return super().send(request, **kwargs)
         resolved_ip, original_host = resolve_and_validate(request.url)
         request.headers["Host"] = original_host
         request.url = request.url.replace(f"://{original_host}", f"://{resolved_ip}", 1)
