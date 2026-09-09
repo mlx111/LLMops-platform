@@ -61,6 +61,22 @@ services:
       redis:
         condition: service_healthy
 
+  # MCP Server：把评测平台能力（发起 run / 查分 / 失败明细 / 回归对比）
+  # 以 MCP streamable-http 协议暴露，外部 Agent（如 mypaperweb supervisor）
+  # 可在运行时发现并调用，实现 Agent 自助评测闭环。端点：http://localhost:9000/mcp
+  mcp:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    command: ["python", "-m", "uvicorn", "app.mcp_server:app", "--host", "0.0.0.0", "--port", "9000"]
+    environment:
+      # MCP 进程通过 compose 内部网络调用 backend REST API
+      LLMOPS_API_BASE: http://backend:8000
+    ports:
+      - "9000:9000"
+    depends_on:
+      - backend
+
   frontend:
     build:
       context: ./frontend

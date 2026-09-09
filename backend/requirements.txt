@@ -9,3 +9,4 @@ python-dotenv>=1.0.0
 deepeval
 tiktoken
 cryptography>=42.0.0
+mcp>=2.2.0
