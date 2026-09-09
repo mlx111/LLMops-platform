@@ -1,0 +1,132 @@
+name: Evaluation Regression Gate
+
+# CI guard for prompt/agent changes: spins up the LLMOps platform, runs a
+# baseline evaluation and a candidate evaluation, and fails the build when
+# quality metrics regress beyond thresholds (scripts/regression_gate.py).
+#
+# In a real deployment, replace the candidate run with your deployed target
+# system (set LLMOPS_TARGET_URL to the new build) so a broken prompt turns
+# the gate red.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "demo_data/**"
+      - "scripts/regression_gate.py"
+      - ".github/workflows/regression-gate.yml"
+  pull_request:
+
+jobs:
+  regression-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start LLMOps platform (backend + worker + redis)
+        working-directory: ${{ github.workspace }}
+        run: |
+          docker compose up -d redis backend worker
+          for i in $(seq 1 60); do
+            if curl -sf http://localhost:8000/api/datasets > /dev/null; then
+              echo "backend is up"; break
+            fi
+            sleep 3
+          done
+          curl -sf http://localhost:8000/api/datasets > /dev/null
+
+      - name: Create broken candidate dataset (simulates a bad prompt)
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request
+          base = "http://localhost:8000"
+          def req(method, path, payload=None):
+              data = json.dumps(payload).encode() if payload is not None else None
+              r = urllib.request.Request(base + path, data=data, method=method,
+                                         headers={"Content-Type": "application/json"})
+              return json.loads(urllib.request.urlopen(r).read() or b"{}")
+          ds = req("POST", "/api/datasets", {"name": "ci-broken-candidate",
+                   "description": "deliberately wrong references", "case_type": "qa"})
+          cases = [{"case_type": "qa", "input": f"Question {i} about LLM evaluation topic {i}",
+                    "reference_answer": "完全无关的答案内容 zzz unrelated gibberish",
+                    "tags": ["ci-broken"], "difficulty": "easy"} for i in range(10)]
+          req("POST", f"/api/datasets/{ds['id']}/import", {"cases": cases})
+          print("broken dataset", ds["id"])
+          open("broken_ds_id.txt", "w").write(str(ds["id"]))
+          PY
+
+      - name: Run baseline evaluation (seeded QA dataset)
+        run: |
+          python3 - <<'PY'
+          import json, time, urllib.request
+          base = "http://localhost:8000"
+          def req(method, path, payload=None):
+              data = json.dumps(payload).encode() if payload is not None else None
+              r = urllib.request.Request(base + path, data=data, method=method,
+                                         headers={"Content-Type": "application/json"})
+              return json.loads(urllib.request.urlopen(r).read() or b"{}")
+          ds = next(d for d in req("GET", "/api/datasets")["items"] if d["name"] == "QA Cases")
+          run = req("POST", "/api/runs", {"name": "ci-baseline", "dataset_id": ds["id"],
+                                           "concurrency": 3})
+          while req("GET", f"/api/runs/{run['id']}")["status"] not in ("completed", "failed"):
+              time.sleep(3)
+          open("baseline_id.txt", "w").write(str(run["id"]))
+          print("baseline run", run["id"], req("GET", f"/api/runs/{run['id']}")["status"])
+          PY
+
+      - name: Gate must FAIL on broken candidate (red-light check)
+        id: gate_bad
+        continue-on-error: true
+        run: |
+          BASE=$(cat baseline_id.txt); BAD=$(cat broken_ds_id.txt)
+          python3 - <<PY
+          import json, time, urllib.request
+          base = "http://localhost:8000"
+          def req(method, path, payload=None):
+              data = json.dumps(payload).encode() if payload is not None else None
+              r = urllib.request.Request(base + path, data=data, method=method,
+                                         headers={"Content-Type": "application/json"})
+              return json.loads(urllib.request.urlopen(r).read() or b"{}")
+          run = req("POST", "/api/runs", {"name": "ci-candidate-broken",
+                   "dataset_id": $BAD, "concurrency": 3})
+          while req("GET", f"/api/runs/{run['id']}")["status"] not in ("completed", "failed"):
+              time.sleep(3)
+          open("candidate_bad_id.txt", "w").write(str(run["id"]))
+          PY
+          python3 scripts/regression_gate.py --baseline $BASE --candidate $(cat candidate_bad_id.txt)
+
+      - name: Gate must PASS on unchanged candidate (green-light check)
+        id: gate_good
+        continue-on-error: true
+        run: |
+          BASE=$(cat baseline_id.txt)
+          python3 - <<PY
+          import json, time, urllib.request
+          base = "http://localhost:8000"
+          def req(method, path, payload=None):
+              data = json.dumps(payload).encode() if payload is not None else None
+              r = urllib.request.Request(base + path, data=data, method=method,
+                                         headers={"Content-Type": "application/json"})
+              return json.loads(urllib.request.urlopen(r).read() or b"{}")
+          ds = next(d for d in req("GET", "/api/datasets")["items"] if d["name"] == "QA Cases")
+          run = req("POST", "/api/runs", {"name": "ci-candidate-good",
+                   "dataset_id": ds["id"], "concurrency": 3})
+          while req("GET", f"/api/runs/{run['id']}")["status"] not in ("completed", "failed"):
+              time.sleep(3)
+          open("candidate_good_id.txt", "w").write(str(run["id"]))
+          PY
+          python3 scripts/regression_gate.py --baseline $BASE --candidate $(cat candidate_good_id.txt)
+
+      - name: Verify gate behavior
+        run: |
+          if [ "${{ steps.gate_bad.outcome }}" == "success" ]; then
+            echo "::error::Gate did NOT fail on the broken candidate (red light missing)"
+            exit 1
+          fi
+          if [ "${{ steps.gate_good.outcome }}" != "success" ]; then
+            echo "::error::Gate failed on the unchanged candidate (false red light)"
+            exit 1
+          fi
+          echo "Gate behaves correctly: red on regression, green on no-change."

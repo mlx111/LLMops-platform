@@ -1,0 +1,802 @@
+[
+  {
+    "case_type": "agent_trajectory",
+    "input": "请联网调研大语言模型多智能体系统中 supervisor 编排模式的典型架构，检索后总结要点。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-001"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "调研 2024-2025 年 Agentic RAG 的高级技术方案（self-RAG、corrective RAG、adaptive RAG），需要检索资料。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-002"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "请检索 LLM agent 的权威评测基准（AgentBench、tau-bench、GAIA、SWE-bench）并对比维度。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-003"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "联网检索 Model Context Protocol（MCP）的设计目标、传输方式和工具生态，给出技术小结。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-004"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "调研上下文工程 Context Engineering 相对 prompt engineering 的新方法与工程实践。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-005"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "搜索 LangGraph、CrewAI、AutoGen 三个框架在多智能体编排上的分工方式并对比。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-006"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "请检索并分析 RAG 系统中检索结果重排序 reranking 的主流方法。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-007"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "联网调研大模型幻觉的检测方法，给出工程上可落地的缓解手段。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-008"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "检索并总结智能体长期记忆（long-term memory）的实现方案。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-009"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "帮我调研 prompt injection 攻击在工具调用场景下的防御措施。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-010"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "帮我搜索一下 AI 智能体性能评估的常用指标。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-011"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "现在几点了？",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"get_current_time\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "quick",
+      "trajectory",
+      "simple",
+      "traj-012"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "查一下今天的日期。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"get_current_time\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "quick",
+      "trajectory",
+      "simple",
+      "traj-013"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "什么是 RAG？简要说明。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "quick",
+      "trajectory",
+      "simple",
+      "traj-014"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "用 calculator 计算 (48 + 52) * 3。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"mcp__demo-tools__calculator\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-015"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "用 text_stats 统计 harness engineering 的字符数。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"mcp__demo-tools__text_stats\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-016"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "检索 transformer 相关学术论文。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"academic_search_papers\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-017"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "搜索 deepagents 库的 GitHub 仓库。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-018"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "请检索知识库中关于评估指标的内容。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"retrieve_knowledge\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-019"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "调研大模型微调 LoRA 的原理。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "simple",
+      "traj-020"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 请联网调研大语言模型多智能体系统中 supervisor 编排模式的典型架构，检索后总结要点。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-021"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 请联网调研大语言模型多智能体系统中 supervisor 编排模式的典型架构，检索后总结要点。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-022"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 请联网调研大语言模型多智能体系统中 supervisor 编排模式的典型架构，检索后总结要点。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-023"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 调研 2024-2025 年 Agentic RAG 的高级技术方案（self-RAG、corrective RAG、adaptive RAG），需要检索资料。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-024"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 调研 2024-2025 年 Agentic RAG 的高级技术方案（self-RAG、corrective RAG、adaptive RAG），需要检索资料。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-025"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 调研 2024-2025 年 Agentic RAG 的高级技术方案（self-RAG、corrective RAG、adaptive RAG），需要检索资料。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-026"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 请检索 LLM agent 的权威评测基准（AgentBench、tau-bench、GAIA、SWE-bench）并对比维度。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"academic_search_papers\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-027"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 请检索 LLM agent 的权威评测基准（AgentBench、tau-bench、GAIA、SWE-bench）并对比维度。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-028"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 请检索 LLM agent 的权威评测基准（AgentBench、tau-bench、GAIA、SWE-bench）并对比维度。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"academic_search_papers\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-029"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 联网检索 Model Context Protocol（MCP）的设计目标、传输方式和工具生态，给出技术小结。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-030"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 联网检索 Model Context Protocol（MCP）的设计目标、传输方式和工具生态，给出技术小结。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-031"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 联网检索 Model Context Protocol（MCP）的设计目标、传输方式和工具生态，给出技术小结。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-032"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 调研上下文工程 Context Engineering 相对 prompt engineering 的新方法与工程实践。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-033"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 调研上下文工程 Context Engineering 相对 prompt engineering 的新方法与工程实践。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-034"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 调研上下文工程 Context Engineering 相对 prompt engineering 的新方法与工程实践。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-035"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 搜索 LangGraph、CrewAI、AutoGen 三个框架在多智能体编排上的分工方式并对比。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-036"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 搜索 LangGraph、CrewAI、AutoGen 三个框架在多智能体编排上的分工方式并对比。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-037"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 搜索 LangGraph、CrewAI、AutoGen 三个框架在多智能体编排上的分工方式并对比。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-038"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 请检索并分析 RAG 系统中检索结果重排序 reranking 的主流方法。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-039"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 请检索并分析 RAG 系统中检索结果重排序 reranking 的主流方法。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-040"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 请检索并分析 RAG 系统中检索结果重排序 reranking 的主流方法。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-041"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 联网调研大模型幻觉的检测方法，给出工程上可落地的缓解手段。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-042"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 联网调研大模型幻觉的检测方法，给出工程上可落地的缓解手段。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-043"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 联网调研大模型幻觉的检测方法，给出工程上可落地的缓解手段。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-044"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 检索并总结智能体长期记忆（long-term memory）的实现方案。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-045"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 检索并总结智能体长期记忆（long-term memory）的实现方案。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-046"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 检索并总结智能体长期记忆（long-term memory）的实现方案。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-047"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[deep模式] 帮我调研 prompt injection 攻击在工具调用场景下的防御措施。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "deep",
+      "trajectory",
+      "research",
+      "traj-048"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[multi模式] 帮我调研 prompt injection 攻击在工具调用场景下的防御措施。",
+    "reference_answer": "{\"steps\": [{\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "multi",
+      "trajectory",
+      "research",
+      "traj-049"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "multi",
+      "source": "expanded-trajectory"
+    }
+  },
+  {
+    "case_type": "agent_trajectory",
+    "input": "[harness模式] 帮我调研 prompt injection 攻击在工具调用场景下的防御措施。",
+    "reference_answer": "{\"steps\": [{\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"tool_call\", \"tool_name\": \"web_search\", \"tool_args\": {}}, {\"type\": \"final\", \"content\": \"answer\"}], \"success\": true}",
+    "tags": [
+      "harness",
+      "trajectory",
+      "research",
+      "traj-050"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "harness",
+      "source": "expanded-trajectory"
+    }
+  }
+]

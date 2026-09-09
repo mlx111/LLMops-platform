@@ -138,67 +138,138 @@ def _stringify_for_tokens(value) -> str:
 
 # ---------- Demo mode ----------
 
+# Chinese-friendly tokenization: ASCII word split does not work for CJK text
+# (no spaces between words). We extract ASCII words/digits as-is and add
+# single CJK chars plus adjacent bigrams so short Chinese terms match.
+_ASCII_TOKEN = re.compile(r"[a-z0-9][a-z0-9._+-]*")
+_CJK_CHAR = re.compile(r"[一-鿿]")
+
+
+def _tokenize(text: str) -> set[str]:
+    """Mixed-language token set: ASCII words + CJK unigrams & bigrams."""
+    if not text:
+        return set()
+    lowered = text.lower()
+    tokens: set[str] = set(_ASCII_TOKEN.findall(lowered))
+    cjk = _CJK_CHAR.findall(lowered)
+    tokens.update(cjk)
+    tokens.update(cjk[i] + cjk[i + 1] for i in range(len(cjk) - 1))
+    return tokens
+
+
+def _coverage(must_have: set[str], pool: set[str]) -> float:
+    """Fraction of must_have tokens present in pool (deduplicated)."""
+    if not must_have:
+        return 0.0
+    return len(must_have & pool) / len(must_have)
+
+
 def _demo_faithfulness(actual: str, reference: str, contexts: list[str]) -> dict:
+    """RAGAS-style faithfulness: answer claims supported by retrieved context."""
     if not contexts:
         return {"score": 0.7, "reason": "No retrieval context", "success": True}
-    all_context = " ".join(contexts).lower()
-    words = set(actual.lower().split())
-    context_words = set(all_context.split())
-    if not words:
+    actual_tokens = _tokenize(actual)
+    context_tokens = _tokenize(" ".join(contexts))
+    if not actual_tokens:
         return {"score": 0.0, "reason": "Empty output", "success": False}
-    overlap = len(words & context_words) / len(words)
-    score = min(overlap * 1.5, 1.0)
-    return {"score": round(score, 4), "reason": f"Keyword overlap: {overlap:.1%}", "success": score >= 0.5}
+    supported = _coverage(actual_tokens, context_tokens)
+    score = min(supported * 1.4, 1.0)
+    return {"score": round(score, 4), "reason": f"Answer tokens supported by context: {supported:.1%}", "success": score >= 0.5}
 
 
-def _demo_answer_relevancy(actual: str, question: str) -> dict:
-    q_words = set(re.sub(r"[?？,，.。!！]", "", question).lower().split())
-    a_words = set(actual.lower().split())
-    if not q_words or not a_words:
+_STOP_TERMS = {
+    # Chinese question / function words (as unigrams and adjacent bigrams)
+    "什么", "怎么", "怎样", "如何", "为什么", "为何", "哪些", "哪个", "哪里", "多少",
+    "请问", "一下", "帮我", "我们", "他们", "可以", "能够", "需要", "应该", "什么是",
+    "解释", "说明", "简述", "简要", "告诉", "对比", "比较", "区别", "之间", "关于",
+    "根据", "通过", "进行", "以及", "等等", "作用", "原因", "优缺点", "特点",
+    "这个", "那个", "一种", "什么", "怎么", "有什么", "是什么", "有哪些",
+}
+
+
+def _demo_answer_relevancy(actual: str, question: str, reference: str = "") -> dict:
+    """RAGAS-style answer relevancy: does the answer address the question topic.
+
+    Rule-based proxy for the embedding-based RAGAS metric. Two topical signals:
+    question-term coverage (answer echoes the question's subject) and
+    reference-term coverage (answer stays on the same topic as the reference).
+    An answer sharing neither signal with the question domain is off-topic.
+    """
+    q_tokens = _tokenize(re.sub(r"[?？,，.。!！、：:]", "", question))
+    a_tokens = _tokenize(actual)
+    if not q_tokens or not a_tokens:
         return {"score": 0.5, "reason": "Insufficient content", "success": True}
-    overlap = len(q_words & a_words) / len(q_words)
-    score = 0.3 + overlap * 0.7
-    return {"score": round(score, 4), "reason": f"Q-A word overlap: {overlap:.1%}", "success": score >= 0.5}
+    # Keep content-bearing terms: ASCII terms / CJK bigrams, minus stopwords.
+    q_content = set()
+    for t in q_tokens:
+        is_ascii_term = bool(re.fullmatch(r"[a-z0-9][a-z0-9._+-]*", t))
+        if is_ascii_term and len(t) >= 2:
+            q_content.add(t)
+        elif len(t) >= 2 and t not in _STOP_TERMS:
+            q_content.add(t)
+    if not q_content:
+        q_content = {t for t in q_tokens if len(t) >= 2}
+    q_cov = _coverage(q_content, a_tokens)
+    r_content = {t for t in _tokenize(re.sub(r"参考要点[：:]", "", reference)) if len(t) >= 2}
+    r_cov = _coverage(r_content, a_tokens) if r_content else 0.0
+    score = 0.2 + 0.4 * q_cov + 0.4 * r_cov
+    return {"score": round(score, 4),
+            "reason": f"On-topic signals: question-term {q_cov:.1%}, reference-term {r_cov:.1%}",
+            "success": score >= 0.5}
 
 
-def _demo_correctness(actual: str, reference: str) -> dict:
+def _demo_correctness(actual: str, reference: str, must_keywords: list[str] | None = None) -> dict:
+    """Reference coverage + required-keyword hits (works for zh/en mixed text)."""
     if not reference:
         return {"score": 0.7, "reason": "No reference answer", "success": True}
-    def ngrams(s, n):
-        words = s.lower().split()
-        return {" ".join(words[i:i + n]) for i in range(len(words) - n + 1)}
-    try:
-        bg_a = ngrams(actual, 2)
-        bg_r = ngrams(reference, 2)
-        if not bg_r:
-            return {"score": 0.5, "reason": "Reference too short", "success": True}
-        overlap = len(bg_a & bg_r) / len(bg_r)
-        score = round(overlap, 4) if overlap < 1 else 0.95
-    except Exception:
-        score = 0.5
-    return {"score": score, "reason": f"Bigram overlap: {score:.1%}", "success": score >= 0.5}
+    a_tokens = _tokenize(actual)
+    r_tokens = _tokenize(re.sub(r"参考要点[：:]", "", reference))
+    ref_terms = {t for t in r_tokens if len(t) >= 2}
+    if not ref_terms:
+        return {"score": 0.5, "reason": "Reference too short", "success": True}
+    coverage = _coverage(ref_terms, a_tokens)
+    kw_hit = 1.0
+    if must_keywords:
+        kw_hit = sum(1 for kw in must_keywords if _tokenize(kw) & a_tokens) / len(must_keywords)
+        score = round(0.6 * coverage + 0.4 * kw_hit, 4)
+        reason = f"Reference term coverage: {coverage:.1%}; required keyword hit: {kw_hit:.1%}"
+    else:
+        score = round(min(coverage * 1.25, 0.95), 4)
+        reason = f"Reference term coverage: {coverage:.1%}"
+    return {"score": score, "reason": reason, "success": score >= 0.5}
 
 
 def _demo_context_recall(reference: str, contexts: list[str]) -> dict:
+    """RAGAS context recall: reference points retrievable from context."""
     if not contexts or not reference:
         return {"score": 0.7, "reason": "No context/reference", "success": True}
-    ref_words = set(reference.lower().split())
-    ctx_words = set(" ".join(contexts).lower().split())
-    if not ref_words:
+    ref_tokens = {t for t in _tokenize(reference) if len(t) >= 2}
+    ctx_tokens = _tokenize(" ".join(contexts))
+    if not ref_tokens:
         return {"score": 0.0, "reason": "Empty reference", "success": False}
-    recall = len(ref_words & ctx_words) / len(ref_words)
-    return {"score": round(recall, 4), "reason": f"Recall: {recall:.1%}", "success": recall >= 0.5}
+    recall = _coverage(ref_tokens, ctx_tokens)
+    return {"score": round(recall, 4), "reason": f"Reference points covered by context: {recall:.1%}", "success": recall >= 0.5}
 
 
 def _demo_context_precision(contexts: list[str], actual: str) -> dict:
+    """RAGAS context precision: per-chunk relevance to the answer, averaged."""
     if not contexts:
         return {"score": 0.7, "reason": "No contexts", "success": True}
-    ctx_words = set(" ".join(contexts).lower().split())
-    actual_words = set(actual.lower().split())
-    if not ctx_words:
+    a_tokens = _tokenize(actual)
+    if not a_tokens:
+        return {"score": 0.5, "reason": "Empty answer", "success": True}
+    chunk_scores = []
+    for chunk in contexts:
+        c_tokens = {t for t in _tokenize(chunk) if len(t) >= 2}
+        if not c_tokens:
+            continue
+        chunk_scores.append(_coverage(c_tokens, a_tokens))
+    if not chunk_scores:
         return {"score": 0.5, "reason": "Empty contexts", "success": True}
-    precision = len(ctx_words & actual_words) / len(ctx_words)
-    return {"score": round(precision, 4), "reason": f"Precision: {precision:.1%}", "success": precision >= 0.3}
+    # Weighted by rank (RAGAS contextual precision rewards relevant chunks ranking first).
+    weights = [1.0 / (i + 1) for i in range(len(chunk_scores))]
+    precision = sum(s * w for s, w in zip(chunk_scores, weights)) / sum(weights)
+    return {"score": round(precision, 4), "reason": f"Rank-weighted chunk relevance: {precision:.1%}", "success": precision >= 0.3}
 
 
 def _demo_tool_correctness(actual_tool: str, expected_tool: str) -> dict:
@@ -222,6 +293,7 @@ def _demo_argument_accuracy(actual_args: dict | None, expected_args: dict | None
 def _run_demo(
     case_input, actual_output, case_type, reference_answer,
     retrieval_context, expected_tool, actual_tool, expected_args, actual_args,
+    must_keywords: list[str] | None = None,
 ) -> dict:
     if case_type == "agent_trajectory":
         from app.services.agent_metrics import evaluate_agent_trajectory
@@ -237,9 +309,9 @@ def _run_demo(
         if name == "Faithfulness":
             scores[name] = _demo_faithfulness(actual_output, ref, contexts)
         elif name == "AnswerRelevancy":
-            scores[name] = _demo_answer_relevancy(actual_output, case_input)
+            scores[name] = _demo_answer_relevancy(actual_output, case_input, reference_answer or "")
         elif name == "Correctness":
-            scores[name] = _demo_correctness(actual_output, ref)
+            scores[name] = _demo_correctness(actual_output, ref, must_keywords=must_keywords)
         elif name == "ContextRecall":
             scores[name] = _demo_context_recall(ref, contexts)
         elif name == "ContextPrecision":
@@ -260,6 +332,7 @@ def _run_deepeval(
     retrieval_context, expected_tool, actual_tool, expected_args, actual_args,
     provider: str = "deepseek",
     model: str | None = None,
+    must_keywords: list[str] | None = None,
 ) -> dict:
     from deepeval.test_case import LLMTestCase, ToolCall
     from deepeval.metrics import (
@@ -362,8 +435,10 @@ def run_case_evaluation(
     actual_args: dict | None = None,
     provider: str = "deepseek",
     model: str = "deepseek-chat",
+    extra_metadata: dict | None = None,
 ) -> dict:
     start = time.time()
+    must_keywords = (extra_metadata or {}).get("must_include_keywords") if extra_metadata else None
 
     if case_type == "agent_trajectory":
         # Trajectory metrics (TaskSuccess / ToolSelectionAccuracy /
@@ -389,6 +464,7 @@ def run_case_evaluation(
             case_input, actual_output, case_type,
             reference_answer, retrieval_context,
             expected_tool, actual_tool, expected_args, actual_args,
+            must_keywords=must_keywords,
         )
 
     elapsed = int((time.time() - start) * 1000)

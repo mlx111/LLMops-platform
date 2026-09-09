@@ -1,0 +1,142 @@
+[
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问如何搭建 Python 虚拟环境。Turn 2: 问如何在其中安装依赖包。Turn 3: 问如何导出 requirements.txt。评测助手是否跨三轮给出连贯完整的指引。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-001"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问什么是 RAG。Turn 2: 追问 RAG 为什么能减少幻觉。Turn 3: 再问如何评测一个 RAG 系统。评测回答是否层层递进且前后呼应。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-002"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户想了解 MCP 是什么。Turn 2: 问 MCP Host 和 Server 的区别。Turn 3: 问如何接入一个外部 MCP server。评测是否保持上下文连贯。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-003"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问怎么搜索学术论文。Turn 2: 让助手针对 RAG 方向检索论文。Turn 3: 要求整理 BibTeX 引用。评测多步任务是否衔接。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-004"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问智能体和普通聊天机器人的区别。Turn 2: 追问多智能体协作的价值。Turn 3: 问什么时候该用多智能体。评测论证是否一致。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-005"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问现在几点。Turn 2: 追问明天同一时间开会怎么提醒。Turn 3: 让助手帮忙发邮件通知。评测工具能力是否递进。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-006"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问 embedding 是什么。Turn 2: 追问向量数据库怎么用。Turn 3: 问混合检索为什么更好。评测知识是否连贯。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-007"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问如何写文献综述。Turn 2: 让助手检索相关论文。Turn 3: 要求总结研究趋势。评测跨轮任务完整性。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-008"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问 prompt injection 是什么。Turn 2: 追问工具调用时怎么防御。Turn 3: 问 guardrails 如何落地。评测安全话题连贯性。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-009"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Turn 1: 用户问 LangGraph 是什么。Turn 2: 追问怎么实现人工审批节点。Turn 3: 问状态如何持久化恢复。评测技术深度递进。",
+    "reference_answer": "应跨多轮保持上下文连贯、逐步深入并完整回应每一轮诉求。",
+    "tags": [
+      "multi-turn",
+      "coherence",
+      "mt-010"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-multi-turn"
+    }
+  }
+]

@@ -1,0 +1,906 @@
+[
+  {
+    "case_type": "tool_calling",
+    "input": "现在几点了？",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-001"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我查一下当前时间",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-002"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "现在是北京时间几点？",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-003"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "今天日期是多少？",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-004"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "告诉我现在的时间",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-005"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "查一下上海现在几点",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-006"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "现在什么时间了？",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-007"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "给我看下当前的日期和时间",
+    "reference_answer": "应调用 get_current_time 完成任务：时间、time",
+    "expected_tool": "get_current_time",
+    "expected_args": {
+      "timezone": "Asia/Shanghai"
+    },
+    "tags": [
+      "tool-calling",
+      "easy",
+      "tc-008"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜索一下 LangGraph 的最新版本特性",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "LangGraph 最新版本特性"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-009"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我网上查一查大模型智能体的发展趋势",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "大模型智能体发展趋势"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-010"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜索 MCP 协议的官方文档",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "MCP Model Context Protocol 官方文档"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-011"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "查一下 2025 年 RAG 技术的新进展",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "2025 RAG 技术新进展"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-012"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我搜索 deepagents 这个库的用法",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "deepagents 库用法"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-013"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "网上检索 AutoGen 多智能体框架",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "AutoGen 多智能体框架"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-014"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜索一下 RAGAS 评测框架怎么用",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "RAGAS 评测框架使用"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-015"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我查 prompt injection 的防御方法",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "prompt injection 防御方法"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-016"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜索 CrewAI 框架的介绍",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "CrewAI 框架介绍"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-017"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "查一下向量数据库 Milvus 的最新功能",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "Milvus 向量数据库功能"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-018"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我搜索智能体 self-healing 相关实践",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "LLM agent self-healing 实践"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-019"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "检索 LLM agent benchmark 的最新排名",
+    "reference_answer": "应调用 web_search 完成任务：搜索、search",
+    "expected_tool": "web_search",
+    "expected_args": {
+      "query": "LLM agent benchmark 排名"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-020"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我检索 transformer attention 相关的学术论文",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "transformer attention mechanism"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-021"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜一下 retrieval augmented generation 的论文",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "retrieval augmented generation"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-022"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "查找 large language model agent 方向的论文",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "large language model agent"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-023"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "检索 multi-agent collaboration 相关文献",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "multi-agent collaboration LLM"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-024"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我找 prompt injection 防御的研究论文",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "prompt injection defense"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-025"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜索 chain of thought reasoning 的经典论文",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "chain of thought reasoning"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-026"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "查一下 RAG evaluation 相关的学术研究",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "RAG evaluation faithfulness"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-027"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "检索 context window extension 的论文",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "context window extension LLM"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-028"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我找 tool learning for language models 的文献",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "tool learning language models"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-029"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "搜索 self-reflective RAG 的研究",
+    "reference_answer": "应调用 academic_search_papers 完成任务：论文、paper",
+    "expected_tool": "academic_search_papers",
+    "expected_args": {
+      "query": "self-reflective corrective RAG"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-030"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "请用 calculator 计算 128 加 256 的结果",
+    "reference_answer": "应调用 mcp__demo-tools__calculator 完成任务：计算、calculator",
+    "expected_tool": "mcp__demo-tools__calculator",
+    "expected_args": {
+      "expression": "128 + 256"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-031"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "调用 calculator 算一下 (15 + 27) * 3",
+    "reference_answer": "应调用 mcp__demo-tools__calculator 完成任务：计算、calculator",
+    "expected_tool": "mcp__demo-tools__calculator",
+    "expected_args": {
+      "expression": "(15 + 27) * 3"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-032"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "用计算器算 1024 除以 16",
+    "reference_answer": "应调用 mcp__demo-tools__calculator 完成任务：计算、calculator",
+    "expected_tool": "mcp__demo-tools__calculator",
+    "expected_args": {
+      "expression": "1024 / 16"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-033"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "calculator 帮我算 99 * 99 等于多少",
+    "reference_answer": "应调用 mcp__demo-tools__calculator 完成任务：计算、calculator",
+    "expected_tool": "mcp__demo-tools__calculator",
+    "expected_args": {
+      "expression": "99 * 99"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-034"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "请计算 (100 - 37) + 58 的值",
+    "reference_answer": "应调用 mcp__demo-tools__calculator 完成任务：计算、calculator",
+    "expected_tool": "mcp__demo-tools__calculator",
+    "expected_args": {
+      "expression": "(100 - 37) + 58"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-035"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "用 calculator 求 2 的 10 次方",
+    "reference_answer": "应调用 mcp__demo-tools__calculator 完成任务：计算、calculator",
+    "expected_tool": "mcp__demo-tools__calculator",
+    "expected_args": {
+      "expression": "2 ** 10"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-036"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "用 text_stats 统计 hello world 的字符数",
+    "reference_answer": "应调用 mcp__demo-tools__text_stats 完成任务：统计、字符",
+    "expected_tool": "mcp__demo-tools__text_stats",
+    "expected_args": {
+      "text": "hello world"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-037"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "调用 text_stats 统计 MCP host dynamic tools 这段文本",
+    "reference_answer": "应调用 mcp__demo-tools__text_stats 完成任务：统计、字符",
+    "expected_tool": "mcp__demo-tools__text_stats",
+    "expected_args": {
+      "text": "MCP host dynamic tools"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-038"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我统计字符串 agent harness 有多少个字符",
+    "reference_answer": "应调用 mcp__demo-tools__text_stats 完成任务：统计、字符",
+    "expected_tool": "mcp__demo-tools__text_stats",
+    "expected_args": {
+      "text": "agent harness"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-039"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "text_stats 分析一下 langgraph supervisor 的文本长度",
+    "reference_answer": "应调用 mcp__demo-tools__text_stats 完成任务：统计、字符",
+    "expected_tool": "mcp__demo-tools__text_stats",
+    "expected_args": {
+      "text": "langgraph supervisor"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-040"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "使用 send_email 给 a@example.com 发邮件，主题是会议提醒",
+    "reference_answer": "应调用 send_email 完成任务：邮件、email、审批",
+    "expected_tool": "send_email",
+    "expected_args": {
+      "to": "a@example.com",
+      "subject": "会议提醒"
+    },
+    "tags": [
+      "tool-calling",
+      "hard",
+      "tc-041"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "帮我用 send_email 给 boss@company.com 发一封周报邮件",
+    "reference_answer": "应调用 send_email 完成任务：邮件、email、审批",
+    "expected_tool": "send_email",
+    "expected_args": {
+      "to": "boss@company.com",
+      "subject": "周报"
+    },
+    "tags": [
+      "tool-calling",
+      "hard",
+      "tc-042"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "调用 send_email 给 mentor@example.com 发送项目进展",
+    "reference_answer": "应调用 send_email 完成任务：邮件、email、审批",
+    "expected_tool": "send_email",
+    "expected_args": {
+      "to": "mentor@example.com",
+      "subject": "项目进展"
+    },
+    "tags": [
+      "tool-calling",
+      "hard",
+      "tc-043"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "用 send_email 给 team@example.com 发通知邮件",
+    "reference_answer": "应调用 send_email 完成任务：邮件、email、审批",
+    "expected_tool": "send_email",
+    "expected_args": {
+      "to": "team@example.com",
+      "subject": "通知"
+    },
+    "tags": [
+      "tool-calling",
+      "hard",
+      "tc-044"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "根据知识库文档，说明项目里上下文工程的设计重点是什么？",
+    "reference_answer": "应调用 retrieve_knowledge 完成任务：检索、知识库、文档",
+    "expected_tool": "retrieve_knowledge",
+    "expected_args": {
+      "query": "根据知识库文档，说明项目里上下文工程的设计重点是什么"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-045"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "检索文档中关于评估指标的内容并总结",
+    "reference_answer": "应调用 retrieve_knowledge 完成任务：检索、知识库、文档",
+    "expected_tool": "retrieve_knowledge",
+    "expected_args": {
+      "query": "检索文档中关于评估指标的内容并总结"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-046"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "从已上传文档里查找 RAG 架构相关章节",
+    "reference_answer": "应调用 retrieve_knowledge 完成任务：检索、知识库、文档",
+    "expected_tool": "retrieve_knowledge",
+    "expected_args": {
+      "query": "从已上传文档里查找 RAG 架构相关章节"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-047"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "知识库中有没有关于多智能体分工的说明？",
+    "reference_answer": "应调用 retrieve_knowledge 完成任务：检索、知识库、文档",
+    "expected_tool": "retrieve_knowledge",
+    "expected_args": {
+      "query": "知识库中有没有关于多智能体分工的说明"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-048"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "根据文档列出最重要的三条评估指标",
+    "reference_answer": "应调用 retrieve_knowledge 完成任务：检索、知识库、文档",
+    "expected_tool": "retrieve_knowledge",
+    "expected_args": {
+      "query": "根据文档列出最重要的三条评估指标"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-049"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  },
+  {
+    "case_type": "tool_calling",
+    "input": "检索文档里关于 MCP Host 的实现说明",
+    "reference_answer": "应调用 retrieve_knowledge 完成任务：检索、知识库、文档",
+    "expected_tool": "retrieve_knowledge",
+    "expected_args": {
+      "query": "检索文档里关于 MCP Host 的实现说明"
+    },
+    "tags": [
+      "tool-calling",
+      "medium",
+      "tc-050"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "source": "expanded-tool-calling"
+    }
+  }
+]

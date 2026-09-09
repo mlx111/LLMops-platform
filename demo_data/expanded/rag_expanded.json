@@ -1,0 +1,1136 @@
+[
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「大语言模型智能体（LLM agent）的评测基准」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、大语言模型智能体",
+    "reference_context_ids": [
+      "ctx_001"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-001"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 大语言模型智能体（LLM agent）的评测基准，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、大语言模型智能体",
+    "reference_context_ids": [
+      "ctx_002"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-002"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于大语言模型智能体（LLM agent）的评测基准，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、大语言模型智能体",
+    "reference_context_ids": [
+      "ctx_003"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-003"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「Agentic RAG 的高级技术方案」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、Agentic",
+    "reference_context_ids": [
+      "ctx_004"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-004"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 Agentic RAG 的高级技术方案，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、Agentic",
+    "reference_context_ids": [
+      "ctx_005"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-005"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于Agentic RAG 的高级技术方案，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、Agentic",
+    "reference_context_ids": [
+      "ctx_006"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-006"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「上下文工程 Context Engineering 的最佳实践」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、上下文工程",
+    "reference_context_ids": [
+      "ctx_007"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-007"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 上下文工程 Context Engineering 的最佳实践，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、上下文工程",
+    "reference_context_ids": [
+      "ctx_008"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-008"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于上下文工程 Context Engineering 的最佳实践，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、上下文工程",
+    "reference_context_ids": [
+      "ctx_009"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-009"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「多智能体编排框架 LangGraph 与 AutoGen 的对比」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、多智能体编排框架",
+    "reference_context_ids": [
+      "ctx_010"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-010"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 多智能体编排框架 LangGraph 与 AutoGen 的对比，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、多智能体编排框架",
+    "reference_context_ids": [
+      "ctx_011"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-011"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于多智能体编排框架 LangGraph 与 AutoGen 的对比，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、多智能体编排框架",
+    "reference_context_ids": [
+      "ctx_012"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-012"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「MCP Model Context Protocol 生态与工具发现」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、MCP",
+    "reference_context_ids": [
+      "ctx_013"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-013"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 MCP Model Context Protocol 生态与工具发现，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、MCP",
+    "reference_context_ids": [
+      "ctx_014"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-014"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于MCP Model Context Protocol 生态与工具发现，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、MCP",
+    "reference_context_ids": [
+      "ctx_015"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-015"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「检索增强生成中的重排序 reranking 技术」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、检索增强生成中的重排序",
+    "reference_context_ids": [
+      "ctx_016"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-016"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 检索增强生成中的重排序 reranking 技术，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、检索增强生成中的重排序",
+    "reference_context_ids": [
+      "ctx_017"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-017"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于检索增强生成中的重排序 reranking 技术，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、检索增强生成中的重排序",
+    "reference_context_ids": [
+      "ctx_018"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-018"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「向量检索与混合检索 hybrid search 的效果」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、向量检索与混合检索",
+    "reference_context_ids": [
+      "ctx_019"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-019"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 向量检索与混合检索 hybrid search 的效果，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、向量检索与混合检索",
+    "reference_context_ids": [
+      "ctx_020"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-020"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于向量检索与混合检索 hybrid search 的效果，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、向量检索与混合检索",
+    "reference_context_ids": [
+      "ctx_021"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-021"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「大模型幻觉检测与缓解方法」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、大模型幻觉检测与缓解方法",
+    "reference_context_ids": [
+      "ctx_022"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-022"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 大模型幻觉检测与缓解方法，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、大模型幻觉检测与缓解方法",
+    "reference_context_ids": [
+      "ctx_023"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-023"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于大模型幻觉检测与缓解方法，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、大模型幻觉检测与缓解方法",
+    "reference_context_ids": [
+      "ctx_024"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-024"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「智能体记忆 memory 管理机制」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、智能体记忆",
+    "reference_context_ids": [
+      "ctx_025"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-025"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 智能体记忆 memory 管理机制，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、智能体记忆",
+    "reference_context_ids": [
+      "ctx_026"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-026"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于智能体记忆 memory 管理机制，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、智能体记忆",
+    "reference_context_ids": [
+      "ctx_027"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-027"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「prompt injection 攻击与防御」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、prompt",
+    "reference_context_ids": [
+      "ctx_028"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-028"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 prompt injection 攻击与防御，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、prompt",
+    "reference_context_ids": [
+      "ctx_029"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-029"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于prompt injection 攻击与防御，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、prompt",
+    "reference_context_ids": [
+      "ctx_030"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-030"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「self-RAG 与 corrective RAG 自适应检索」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、self-RAG",
+    "reference_context_ids": [
+      "ctx_031"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-031"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 self-RAG 与 corrective RAG 自适应检索，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、self-RAG",
+    "reference_context_ids": [
+      "ctx_032"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-032"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于self-RAG 与 corrective RAG 自适应检索，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、self-RAG",
+    "reference_context_ids": [
+      "ctx_033"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-033"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「LLM 函数调用 function calling 的可靠性」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、LLM",
+    "reference_context_ids": [
+      "ctx_034"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-034"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 LLM 函数调用 function calling 的可靠性，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、LLM",
+    "reference_context_ids": [
+      "ctx_035"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-035"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于LLM 函数调用 function calling 的可靠性，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、LLM",
+    "reference_context_ids": [
+      "ctx_036"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-036"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「RAG 系统的评测指标 faithfulness 与 context recall」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、RAG",
+    "reference_context_ids": [
+      "ctx_037"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-037"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 RAG 系统的评测指标 faithfulness 与 context recall，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、RAG",
+    "reference_context_ids": [
+      "ctx_038"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-038"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于RAG 系统的评测指标 faithfulness 与 context recall，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、RAG",
+    "reference_context_ids": [
+      "ctx_039"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-039"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「大模型微调 LoRA 与全参数微调的取舍」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、大模型微调",
+    "reference_context_ids": [
+      "ctx_040"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-040"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 大模型微调 LoRA 与全参数微调的取舍，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、大模型微调",
+    "reference_context_ids": [
+      "ctx_041"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-041"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于大模型微调 LoRA 与全参数微调的取舍，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、大模型微调",
+    "reference_context_ids": [
+      "ctx_042"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-042"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「思维链 chain-of-thought 对推理任务的影响」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、思维链",
+    "reference_context_ids": [
+      "ctx_043"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-043"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 思维链 chain-of-thought 对推理任务的影响，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、思维链",
+    "reference_context_ids": [
+      "ctx_044"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-044"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于思维链 chain-of-thought 对推理任务的影响，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、思维链",
+    "reference_context_ids": [
+      "ctx_045"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-045"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「embedding 模型在中文检索中的表现」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、embedding",
+    "reference_context_ids": [
+      "ctx_046"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-046"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 embedding 模型在中文检索中的表现，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、embedding",
+    "reference_context_ids": [
+      "ctx_047"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-047"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "关于embedding 模型在中文检索中的表现，请检索相关资料并说明核心方法与适用场景。",
+    "reference_answer": "参考要点：核心方法、适用场景、embedding",
+    "reference_context_ids": [
+      "ctx_048"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-048"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "核心方法",
+        "适用场景"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "请联网检索并总结「智能体工具调用的自愈与容错」的最新进展，给出关键要点。",
+    "reference_answer": "参考要点：检索、总结、要点、智能体工具调用的自愈与容错",
+    "reference_context_ids": [
+      "ctx_049"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-049"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "检索",
+        "总结",
+        "要点"
+      ],
+      "source": "expanded-rag"
+    }
+  },
+  {
+    "case_type": "rag",
+    "input": "帮我调研一下 智能体工具调用的自愈与容错，需要查阅资料后给出结构化小结。",
+    "reference_answer": "参考要点：调研、资料、小结、智能体工具调用的自愈与容错",
+    "reference_context_ids": [
+      "ctx_050"
+    ],
+    "tags": [
+      "research",
+      "web-retrieval",
+      "rag-050"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "deep",
+      "must_include_keywords": [
+        "调研",
+        "资料",
+        "小结"
+      ],
+      "source": "expanded-rag"
+    }
+  }
+]

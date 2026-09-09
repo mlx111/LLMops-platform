@@ -144,18 +144,27 @@ def _evaluate_single_case(
             actual_for_eval = (
                 trajectory if (case_type == "agent_trajectory" and trajectory) else actual_output
             )
+            # Retrieval context for RAG context metrics: the live target does
+            # not stream retrieved chunks, so in demo mode we treat the
+            # reference answer as the ideal retrieved context (ideal-system
+            # simulation); in live mode context metrics fall back to neutral.
+            if case_type == "rag" and reference_answer and not target_url:
+                retrieval_context = [reference_answer]
+            else:
+                retrieval_context = []
             eval_result = run_case_evaluation(
                 case_input=case_input,
                 actual_output=actual_for_eval,
                 case_type=case_type,
                 reference_answer=reference_answer,
-                retrieval_context=reference_context_ids or [],
+                retrieval_context=retrieval_context,
                 expected_tool=expected_tool,
                 actual_tool=actual_tool,
                 expected_args=expected_args,
                 actual_args=actual_args,
                 provider=provider,
                 model=model,
+                extra_metadata=case.extra_metadata,
             )
             tracer.set_step_output(
                 step.id,
@@ -402,6 +411,26 @@ def _simulate_output(case) -> str:
     return f"Answer to: {case.input[:80]}"
 
 
+def _simulate_ideal_target(case) -> tuple[str, str | None, dict | None, int, int, dict | None]:
+    """Demo-mode stand-in for an *ideal* target system (pipeline testing /
+    scale demos without a live agent): echoes the reference answer, makes the
+    expected tool call, and follows the reference trajectory exactly."""
+    import json as _json
+
+    output = _simulate_output(case)
+    actual_tool = case.expected_tool if case.case_type == "tool_calling" else None
+    actual_args = case.expected_args if case.case_type == "tool_calling" else None
+    trajectory = None
+    if case.case_type == "agent_trajectory" and case.reference_answer:
+        try:
+            parsed = _json.loads(case.reference_answer)
+            if isinstance(parsed, dict) and "steps" in parsed:
+                trajectory = parsed
+        except (ValueError, TypeError):
+            trajectory = None
+    return output, actual_tool, actual_args, 0, count_tokens(output, None), trajectory
+
+
 def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | None, int, int, dict | None]:
     """
     Call the target RAG/Agent system to get actual output.
@@ -419,8 +448,7 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
     model = (config or {}).get("model")
     target_url = (config or {}).get("target_url")
     if not target_url:
-        output = _simulate_output(case)
-        return output, None, None, 0, count_tokens(output, model), None
+        return _simulate_ideal_target(case)
 
     validate_target_url(target_url)
 

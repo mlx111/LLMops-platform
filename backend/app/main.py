@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import Base, engine
-from app.routers import datasets, versions, runs, dashboard, config_router, traces, reports
+from app.routers import datasets, versions, runs, dashboard, config_router, traces, reports, calibration
 
 
 def create_app() -> FastAPI:
@@ -37,6 +37,7 @@ def create_app() -> FastAPI:
     app.include_router(config_router.router)
     app.include_router(traces.router)
     app.include_router(reports.router)
+    app.include_router(calibration.router)
 
     @app.on_event("startup")
     def auto_seed_demo_data():

@@ -1,0 +1,1076 @@
+[
+  {
+    "case_type": "qa",
+    "input": "什么是 Transformer 架构？它相比 RNN 有什么优势？",
+    "reference_answer": "参考要点：attention、自注意力、并行、长距离",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-001"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "attention",
+        "自注意力",
+        "并行",
+        "长距离"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "解释一下自注意力机制（self-attention）是怎么计算的？",
+    "reference_answer": "参考要点：query、key、value、softmax",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-002"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "query",
+        "key",
+        "value",
+        "softmax"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 RAG（检索增强生成）？它解决了大模型的什么问题？",
+    "reference_answer": "参考要点：检索、外部知识、幻觉、参数",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-003"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "检索",
+        "外部知识",
+        "幻觉",
+        "参数"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "Agentic RAG 和传统朴素 RAG 有什么区别？",
+    "reference_answer": "参考要点：智能体、多步、自主、工具调用、规划",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-004"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "智能体",
+        "多步",
+        "自主",
+        "工具调用",
+        "规划"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是大语言模型的上下文窗口（context window）？",
+    "reference_answer": "参考要点：token、长度、限制、注意力",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-005"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "token",
+        "长度",
+        "限制",
+        "注意力"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "解释什么是提示词工程（prompt engineering）？",
+    "reference_answer": "参考要点：提示、指令、示例、few-shot",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-006"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "提示",
+        "指令",
+        "示例",
+        "few-shot"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是上下文工程（context engineering）？它和提示词工程有何不同？",
+    "reference_answer": "参考要点：上下文、记忆、检索、组织、压缩",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-007"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "上下文",
+        "记忆",
+        "检索",
+        "组织",
+        "压缩"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "大模型微调（fine-tuning）有哪些常见方法？",
+    "reference_answer": "参考要点：全参数、LoRA、adapter、指令微调、RLHF",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-008"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "全参数",
+        "LoRA",
+        "adapter",
+        "指令微调",
+        "RLHF"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 embedding（嵌入）？它在 RAG 里起什么作用？",
+    "reference_answer": "参考要点：向量、语义、相似度、检索",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-009"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "向量",
+        "语义",
+        "相似度",
+        "检索"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "向量数据库（如 Milvus）在 RAG 系统里的作用是什么？",
+    "reference_answer": "参考要点：向量、存储、相似度检索、索引",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-010"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "向量",
+        "存储",
+        "相似度检索",
+        "索引"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是重排序（reranking）？为什么检索后要 rerank？",
+    "reference_answer": "参考要点：相关性、排序、精度、cross-encoder",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-011"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "相关性",
+        "排序",
+        "精度",
+        "cross-encoder"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "解释 LLM 智能体（agent）的核心组成部分。",
+    "reference_answer": "参考要点：规划、记忆、工具、行动、LLM",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-012"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "规划",
+        "记忆",
+        "工具",
+        "行动",
+        "LLM"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 ReAct 模式？",
+    "reference_answer": "参考要点：推理、行动、观察、reason、act",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-013"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "推理",
+        "行动",
+        "观察",
+        "reason",
+        "act"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是多智能体系统（multi-agent system）？",
+    "reference_answer": "参考要点：多个、协作、分工、supervisor、通信",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-014"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "多个",
+        "协作",
+        "分工",
+        "supervisor",
+        "通信"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "supervisor 编排模式和主从智能体有什么关系？",
+    "reference_answer": "参考要点：主管、调度、子智能体、handoff、分派",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-015"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "主管",
+        "调度",
+        "子智能体",
+        "handoff",
+        "分派"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 MCP（Model Context Protocol）？",
+    "reference_answer": "参考要点：协议、工具、上下文、标准化、server",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-016"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "协议",
+        "工具",
+        "上下文",
+        "标准化",
+        "server"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "MCP 支持哪两种主要的传输方式？",
+    "reference_answer": "参考要点：stdio、http、传输",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-017"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "stdio",
+        "http",
+        "传输"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 MCP Host？它和 MCP Server 有什么区别？",
+    "reference_answer": "参考要点：客户端、连接、发现工具、server、提供",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-018"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "客户端",
+        "连接",
+        "发现工具",
+        "server",
+        "提供"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是函数调用（function calling / tool calling）？",
+    "reference_answer": "参考要点：工具、参数、结构化、调用",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-019"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "工具",
+        "参数",
+        "结构化",
+        "调用"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "LLM 产生幻觉（hallucination）的原因有哪些？",
+    "reference_answer": "参考要点：编造、参数知识、缺乏证据、概率",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-020"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "编造",
+        "参数知识",
+        "缺乏证据",
+        "概率"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是思维链（chain-of-thought）提示？",
+    "reference_answer": "参考要点：中间步骤、推理、逐步",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-021"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "中间步骤",
+        "推理",
+        "逐步"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "解释检索结果的 chunking（分块）策略为什么重要。",
+    "reference_answer": "参考要点：块大小、语义、上下文、切分",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-022"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "块大小",
+        "语义",
+        "上下文",
+        "切分"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是混合检索（hybrid search）？",
+    "reference_answer": "参考要点：稠密、稀疏、关键词、向量、结合",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-023"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "稠密",
+        "稀疏",
+        "关键词",
+        "向量",
+        "结合"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "BM25 和向量检索各有什么优缺点？",
+    "reference_answer": "参考要点：关键词、语义、稀疏、稠密、精确匹配",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-024"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "关键词",
+        "语义",
+        "稀疏",
+        "稠密",
+        "精确匹配"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是父块检索（parent document retrieval）？",
+    "reference_answer": "参考要点：父块、子块、上下文、粒度",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-025"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "父块",
+        "子块",
+        "上下文",
+        "粒度"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "LLM 评测里常用的基准有哪些？",
+    "reference_answer": "参考要点：benchmark、AgentBench、SWE-bench、GAIA、MMLU",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-026"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "benchmark",
+        "AgentBench",
+        "SWE-bench",
+        "GAIA",
+        "MMLU"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 tau-bench？它评测智能体的什么能力？",
+    "reference_answer": "参考要点：工具、多轮、任务完成、真实场景",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-027"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "工具",
+        "多轮",
+        "任务完成",
+        "真实场景"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "GAIA 基准为什么被认为对智能体很难？",
+    "reference_answer": "参考要点：多步、推理、工具、网页、综合",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-028"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "多步",
+        "推理",
+        "工具",
+        "网页",
+        "综合"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "SWE-bench 评测的是什么任务？",
+    "reference_answer": "参考要点：软件、代码、issue、修复、仓库",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-029"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "软件",
+        "代码",
+        "issue",
+        "修复",
+        "仓库"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "RAGAS 评测框架包含哪些核心指标？",
+    "reference_answer": "参考要点：faithfulness、context、precision、recall、relevancy",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-030"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "faithfulness",
+        "context",
+        "precision",
+        "recall",
+        "relevancy"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "faithfulness（忠实度）指标衡量什么？",
+    "reference_answer": "参考要点：忠于、上下文、编造、依据",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-031"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "忠于",
+        "上下文",
+        "编造",
+        "依据"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 human-in-the-loop（人在环路）？",
+    "reference_answer": "参考要点：人工、审批、确认、干预、高风险",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-032"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "人工",
+        "审批",
+        "确认",
+        "干预",
+        "高风险"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "智能体工具调用为什么需要 guardrails（护栏）？",
+    "reference_answer": "参考要点：注入、越权、拦截、安全、校验",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-033"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "注入",
+        "越权",
+        "拦截",
+        "安全",
+        "校验"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 prompt injection（提示词注入）攻击？",
+    "reference_answer": "参考要点：恶意指令、忽略、劫持、绕过",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-034"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "恶意指令",
+        "忽略",
+        "劫持",
+        "绕过"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "LangGraph 是什么？它适合构建什么应用？",
+    "reference_answer": "参考要点：图、状态、节点、边、智能体、工作流",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-035"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "图",
+        "状态",
+        "节点",
+        "边",
+        "智能体",
+        "工作流"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "deepagents 库提供了哪些智能体能力？",
+    "reference_answer": "参考要点：子智能体、记忆、技能、工具、文件",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-036"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "子智能体",
+        "记忆",
+        "技能",
+        "工具",
+        "文件"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "智能体的记忆（memory）通常分哪几类？",
+    "reference_answer": "参考要点：短期、长期、工作记忆、持久",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-037"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "短期",
+        "长期",
+        "工作记忆",
+        "持久"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是文本的 tokenization？为什么要数 token？",
+    "reference_answer": "参考要点：分词、子词、计费、上下文长度、BPE",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-038"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "分词",
+        "子词",
+        "计费",
+        "上下文长度",
+        "BPE"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "温度参数 temperature 对 LLM 输出有什么影响？",
+    "reference_answer": "参考要点：随机性、创造性、概率、采样",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-039"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "随机性",
+        "创造性",
+        "概率",
+        "采样"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "top-p 和 temperature 采样有什么区别？",
+    "reference_answer": "参考要点：核采样、累积概率、随机、词汇",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-040"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "核采样",
+        "累积概率",
+        "随机",
+        "词汇"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是结构化输出（structured output）？",
+    "reference_answer": "参考要点：JSON、schema、字段、可靠解析",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-041"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "JSON",
+        "schema",
+        "字段",
+        "可靠解析"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "解释智能体的自我修复（self-healing）循环。",
+    "reference_answer": "参考要点：校验、修复、重试、降级、参数",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-042"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "校验",
+        "修复",
+        "重试",
+        "降级",
+        "参数"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "CrewAI、AutoGen 这类框架解决什么问题？",
+    "reference_answer": "参考要点：多智能体、协作、编排、角色",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-043"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "多智能体",
+        "协作",
+        "编排",
+        "角色"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是工具的 schema 校验？",
+    "reference_answer": "参考要点：参数、类型、必填、范围、校验",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-044"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "参数",
+        "类型",
+        "必填",
+        "范围",
+        "校验"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "为什么中文文本检索/评测不能简单按空格分词？",
+    "reference_answer": "参考要点：中文、没有空格、分词、字符、词语",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-045"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "中文",
+        "没有空格",
+        "分词",
+        "字符",
+        "词语"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "arXiv 是什么？学术检索为什么常用它？",
+    "reference_answer": "参考要点：预印本、论文、学术、开放",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-046"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "预印本",
+        "论文",
+        "学术",
+        "开放"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "BibTeX 在论文写作里的作用是什么？",
+    "reference_answer": "参考要点：引用、参考文献、格式、citation",
+    "tags": [
+      "domain-knowledge",
+      "easy",
+      "qa-047"
+    ],
+    "difficulty": "easy",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "引用",
+        "参考文献",
+        "格式",
+        "citation"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是 LLM-as-a-judge？它有什么优缺点？",
+    "reference_answer": "参考要点：模型评分、成本、偏差、一致、灵活",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-048"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "模型评分",
+        "成本",
+        "偏差",
+        "一致",
+        "灵活"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "评测智能体时，任务成功率（task success）怎么判断？",
+    "reference_answer": "参考要点：完成、最终答案、目标达成、轨迹",
+    "tags": [
+      "domain-knowledge",
+      "medium",
+      "qa-049"
+    ],
+    "difficulty": "medium",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "完成",
+        "最终答案",
+        "目标达成",
+        "轨迹"
+      ],
+      "source": "expanded-qa"
+    }
+  },
+  {
+    "case_type": "qa",
+    "input": "什么是轨迹评测（trajectory evaluation）？它和只看最终答案有何不同？",
+    "reference_answer": "参考要点：步骤、工具调用、过程、中间、路径",
+    "tags": [
+      "domain-knowledge",
+      "hard",
+      "qa-050"
+    ],
+    "difficulty": "hard",
+    "extra_metadata": {
+      "mode": "quick",
+      "must_include_keywords": [
+        "步骤",
+        "工具调用",
+        "过程",
+        "中间",
+        "路径"
+      ],
+      "source": "expanded-qa"
+    }
+  }
+]
