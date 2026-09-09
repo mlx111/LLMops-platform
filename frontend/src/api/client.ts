@@ -85,6 +85,7 @@ export const configApi = {
 export const dashboardApi = {
   stats: () => api.get('/dashboard/stats'),
   health: () => api.get('/dashboard/health'),
+  trends: (days?: number) => api.get('/dashboard/trends', { params: { days } }),
 };
 
 // Reports

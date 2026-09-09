@@ -10,3 +10,5 @@ deepeval
 tiktoken
 cryptography>=42.0.0
 mcp>=2.2.0
+# Langfuse v2 SDK（judge 调用上报 trace + token 成本）
+langfuse<3.0.0

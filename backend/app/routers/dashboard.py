@@ -1,3 +1,4 @@
+import datetime
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, Query
@@ -65,6 +66,86 @@ def _tail_file(path: Path, n: int) -> list[str]:
             chunk = f.read(read_size).decode("utf-8", errors="replace")
             buffer = chunk.split("\n") + buffer
         return [line.rstrip("\r") for line in buffer[-n:] if line]
+
+
+@router.get("/dashboard/trends")
+def get_dashboard_trends(
+    days: int = Query(default=14, ge=1, le=90),
+    db: Session = Depends(get_db),
+):
+    """按天聚合的评测趋势：分数 / 通过率 / 延迟 / token 用量。
+
+    Phase 6 成本优化看板数据源：avg_tokens 来自 target 系统上报的真实
+    token 用量（quick 语义缓存命中时为 0，模型路由后按实际模型计量）。
+    """
+    since = datetime.datetime.utcnow() - datetime.timedelta(days=days)
+    runs = (
+        db.query(EvalRun)
+        .filter(EvalRun.created_at >= since, EvalRun.status == "completed")
+        .order_by(EvalRun.created_at.asc())
+        .all()
+    )
+
+    daily: dict[str, dict] = {}
+    run_series: list[dict] = []
+    for run in runs:
+        day = run.created_at.strftime("%Y-%m-%d")
+        bucket = daily.setdefault(
+            day,
+            {
+                "date": day,
+                "runs": 0,
+                "avg_score_sum": 0.0,
+                "avg_score_n": 0,
+                "pass_rate_sum": 0.0,
+                "pass_rate_n": 0,
+                "latency_sum": 0.0,
+                "latency_n": 0,
+                "tokens_sum": 0.0,
+                "tokens_n": 0,
+            },
+        )
+        bucket["runs"] += 1
+        if run.avg_score is not None:
+            bucket["avg_score_sum"] += run.avg_score
+            bucket["avg_score_n"] += 1
+        if run.total_cases > 0:
+            bucket["pass_rate_sum"] += run.passed_cases / run.total_cases
+            bucket["pass_rate_n"] += 1
+        if run.avg_latency_ms is not None:
+            bucket["latency_sum"] += run.avg_latency_ms
+            bucket["latency_n"] += 1
+        if run.avg_tokens is not None and run.avg_tokens > 0:
+            bucket["tokens_sum"] += run.avg_tokens
+            bucket["tokens_n"] += 1
+        run_series.append(
+            {
+                "run_id": run.id,
+                "name": run.name,
+                "created_at": run.created_at.isoformat(timespec="seconds"),
+                "avg_score": run.avg_score,
+                "pass_rate": round(run.passed_cases / run.total_cases * 100, 1) if run.total_cases else 0,
+                "avg_latency_ms": run.avg_latency_ms,
+                "avg_tokens": run.avg_tokens,
+                "total_cases": run.total_cases,
+            }
+        )
+
+    trend = []
+    for day in sorted(daily):
+        b = daily[day]
+        trend.append(
+            {
+                "date": day,
+                "runs": b["runs"],
+                "avg_score": round(b["avg_score_sum"] / b["avg_score_n"], 4) if b["avg_score_n"] else None,
+                "pass_rate": round(b["pass_rate_sum"] / b["pass_rate_n"] * 100, 1) if b["pass_rate_n"] else None,
+                "avg_latency_ms": round(b["latency_sum"] / b["latency_n"], 1) if b["latency_n"] else None,
+                "avg_tokens": round(b["tokens_sum"] / b["tokens_n"], 1) if b["tokens_n"] else None,
+            }
+        )
+
+    return {"trend": trend, "runs": run_series[-50:]}
 
 
 @router.get("/dashboard/stats", response_model=DashboardStats)

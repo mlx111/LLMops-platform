@@ -37,6 +37,8 @@ backend/.venv/
 
 # Docker local env (contains Fernet ENCRYPTION_KEY — never commit)
 docker.env
+# Langfuse v2 server secrets (NEXTAUTH_SECRET / SALT / ENCRYPTION_KEY)
+langfuse.env
 
 # Personal notes (interview prep / problem notes — not part of the project)
 INTERVIEW_PREP.md

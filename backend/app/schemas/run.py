@@ -67,6 +67,7 @@ class EvalResultOut(BaseModel):
     latency_ms: int
     input_tokens: int
     output_tokens: int
+    target_meta: dict | None = None
     created_at: datetime
 
     model_config = {"from_attributes": True}

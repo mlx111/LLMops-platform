@@ -121,7 +121,7 @@ def _evaluate_single_case(
                 "case_type": case_type,
             },
         ) as step:
-            actual_output, actual_tool, actual_args, target_latency, target_tokens, trajectory = _call_target_system(case, config)
+            actual_output, actual_tool, actual_args, target_latency, target_tokens, trajectory, target_usage = _call_target_system(case, config)
             tracer.set_step_output(
                 step.id,
                 {
@@ -183,8 +183,20 @@ def _evaluate_single_case(
         # For deterministic agent_trajectory metrics the judge latency is ~0,
         # so the meaningful figure is the real target/agent response latency.
         result.latency_ms = target_latency + (eval_result.get("latency_ms") or 0)
-        result.input_tokens = eval_result["input_tokens"]
-        result.output_tokens = eval_result["output_tokens"]
+        # Phase 6: 有真实 target 用量时用它（成本量化口径），否则回退 judge/估算口径；
+        # 同时记录 target 上报的路由/缓存元数据（缓存命中时 token 为全 0 也如实记录）
+        if target_usage is not None:
+            result.target_meta = {
+                "model": target_usage.get("model") or "",
+                "routed": bool(target_usage.get("routed")),
+                "route_tier": target_usage.get("route_tier"),
+                "cache_hit": bool(target_usage.get("cache_hit")),
+            }
+            result.input_tokens = int(target_usage.get("prompt_tokens") or 0)
+            result.output_tokens = int(target_usage.get("completion_tokens") or 0)
+        else:
+            result.input_tokens = eval_result["input_tokens"]
+            result.output_tokens = eval_result["output_tokens"]
 
         all_pass = all(score["success"] for score in eval_result["scores"].values())
         result.status = "passed" if all_pass else "failed"
@@ -431,7 +443,7 @@ def _simulate_ideal_target(case) -> tuple[str, str | None, dict | None, int, int
     return output, actual_tool, actual_args, 0, count_tokens(output, None), trajectory
 
 
-def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | None, int, int, dict | None]:
+def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | None, int, int, dict | None, dict | None]:
     """
     Call the target RAG/Agent system to get actual output.
     Returns (actual_output, actual_tool, actual_args, latency_ms, token_estimate, trajectory).
@@ -448,7 +460,8 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
     model = (config or {}).get("model")
     target_url = (config or {}).get("target_url")
     if not target_url:
-        return _simulate_ideal_target(case)
+        _sim = _simulate_ideal_target(case)
+        return (*_sim, None)  # demo 模式无 target_usage
 
     validate_target_url(target_url)
 
@@ -502,7 +515,24 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
 
     total_tokens = count_tokens(str(payload), model) + count_tokens(actual_output, model)
 
-    return actual_output, actual_tool, actual_args, elapsed_ms, total_tokens, trajectory
+    # Phase 6: 优先采用目标系统上报的真实 token 用量（模型路由/缓存 A/B 的量化口径）。
+    # 注意：缓存命中时上报值可为全 0，此时也必须保留（真实成本为 0 的证据），
+    # 因此只要 target 上报了 token_usage 字段就生成 target_usage，不做非零过滤。
+    raw_usage = data.get("token_usage")
+    target_usage: dict | None = None
+    if isinstance(raw_usage, dict):
+        target_usage = {
+            "prompt_tokens": int(raw_usage.get("prompt_tokens") or 0),
+            "completion_tokens": int(raw_usage.get("completion_tokens") or 0),
+            "total_tokens": int(raw_usage.get("total_tokens") or 0),
+            "estimated": bool(raw_usage.get("estimated", False)),
+            "model": str(data.get("model") or raw_usage.get("model") or ""),
+            "routed": bool(data.get("routed", False)),
+            "route_tier": data.get("route_tier"),
+            "cache_hit": bool(data.get("cache_hit", False)),
+        }
+
+    return actual_output, actual_tool, actual_args, elapsed_ms, total_tokens, trajectory, target_usage
 
 
 def _classify_failure(

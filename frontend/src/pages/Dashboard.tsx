@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { dashboardApi, runApi } from '../api/client';
 import CartesianChart from '../components/charts/CartesianChart';
-import type { DashboardStats, EvalRun } from '../types';
+import type { DashboardStats, EvalRun, TrendBucket } from '../types';
 
 const statusColors: Record<string, string> = {
   pending: 'default',
@@ -23,15 +23,18 @@ const Dashboard: React.FC = () => {
   const { t } = useTranslation();
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [runs, setRuns] = useState<EvalRun[]>([]);
+  const [trend, setTrend] = useState<TrendBucket[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Promise.all([
       dashboardApi.stats(),
       runApi.list({ limit: 30 }),
-    ]).then(([statsRes, runsRes]) => {
+      dashboardApi.trends(14).catch(() => null),
+    ]).then(([statsRes, runsRes, trendsRes]) => {
       setStats(statsRes.data);
       setRuns(runsRes.data.items);
+      if (trendsRes?.data?.trend) setTrend(trendsRes.data.trend);
     }).finally(() => setLoading(false));
   }, []);
 
@@ -75,6 +78,37 @@ const Dashboard: React.FC = () => {
       itemStyle: { color: '#1677ff', borderRadius: [4, 4, 0, 0] },
     }],
   }), [completedRuns, t]);
+
+  // Phase 6: 按天聚合趋势 —— token 成本（Y1 柱）与平均分（Y2 线）
+  const trendOption = useMemo(() => ({
+    tooltip: { trigger: 'axis' },
+    legend: { data: ['Avg Tokens', t('dashboard.stats.avgScore')] },
+    xAxis: {
+      type: 'category',
+      data: trend.map((d) => d.date),
+      axisLabel: { rotate: 30, fontSize: 10 },
+    },
+    yAxis: [
+      { type: 'value', name: 'Avg Tokens' },
+      { type: 'value', name: t('dashboard.stats.avgScore'), min: 0, max: 1 },
+    ],
+    series: [
+      {
+        name: 'Avg Tokens',
+        type: 'bar',
+        data: trend.map((d) => d.avg_tokens ?? 0),
+        itemStyle: { color: '#722ed1', borderRadius: [4, 4, 0, 0] },
+      },
+      {
+        name: t('dashboard.stats.avgScore'),
+        type: 'line',
+        yAxisIndex: 1,
+        smooth: true,
+        data: trend.map((d) => d.avg_score ?? 0),
+        itemStyle: { color: '#1677ff' },
+      },
+    ],
+  }), [trend, t]);
 
   const latencyOption = useMemo(() => ({
     tooltip: { trigger: 'axis' },
@@ -136,6 +170,12 @@ const Dashboard: React.FC = () => {
           <Card><Statistic title={t('dashboard.stats.datasets')} value={stats?.total_cases ?? 0} prefix={<DollarOutlined />} /></Card>
         </Col>
       </Row>
+
+      {trend.length >= 2 && (
+        <Card title="Cost & Score Trend (14d)" style={{ marginBottom: 16 }}>
+          <CartesianChart option={trendOption} style={{ height: 300 }} />
+        </Card>
+      )}
 
       {completedRuns.length >= 2 && (
         <>

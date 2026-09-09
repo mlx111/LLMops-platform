@@ -47,11 +47,61 @@ def judge_available() -> bool:
     return resolve_judge_config() is not None
 
 
-def _chat_completion(messages: list[dict], temperature: float = 0.0, timeout: int = 60,
-                     retries: int = 2) -> str | None:
+def _report_judge_to_langfuse(
+    kind: str,
+    user_prompt: str,
+    output: str | None,
+    usage: dict | None,
+) -> None:
+    """把一次 judge 调用上报为 Langfuse trace + generation（含 token 成本）。
+
+    Phase 6 可观测：评测/judge 自身的 LLM 开销进 Langfuse 看板。
+    未配置 keys 或 SDK 缺失时静默跳过，绝不影响评测主链路。
+    """
+    pk = os.getenv("LANGFUSE_PUBLIC_KEY", "")
+    sk = os.getenv("LANGFUSE_SECRET_KEY", "")
+    if not pk or not sk:
+        return
+    global _langfuse_client
+    try:
+        from langfuse import Langfuse
+
+        if _langfuse_client is None:
+            _langfuse_client = Langfuse()
+        cfg = resolve_judge_config() or {}
+        trace = _langfuse_client.trace(
+            name="llmops-judge",
+            session_id=f"judge-{kind}",
+            metadata={"kind": kind, "judge_model": cfg.get("model", "")},
+        )
+        usage_payload = None
+        if usage:
+            usage_payload = {
+                "input": int(usage.get("prompt_tokens") or 0),
+                "output": int(usage.get("completion_tokens") or 0),
+                "total": int(usage.get("total_tokens") or 0),
+                "unit": "TOKENS",
+            }
+        trace.generation(
+            name=f"judge-{kind}",
+            model=cfg.get("model", "unknown"),
+            input=user_prompt[:4000],
+            output=(output or "")[:2000],
+            usage=usage_payload,
+            metadata={"kind": kind},
+        )
+        _langfuse_client.flush()
+    except Exception as exc:  # noqa: BLE001 - observability must never break eval
+        logger.warning(f"Langfuse judge report failed: {str(exc)[:200]}")
+
+
+def _chat_completion(
+    messages: list[dict], temperature: float = 0.0, timeout: int = 60, retries: int = 2
+) -> tuple[str | None, dict | None]:
+    """调用 judge 模型，返回 (content, usage)；失败返回 (None, None)。"""
     cfg = resolve_judge_config()
     if not cfg:
-        return None
+        return None, None
     payload = {
         "model": cfg["model"],
         "messages": messages,
@@ -68,13 +118,19 @@ def _chat_completion(messages: list[dict], temperature: float = 0.0, timeout: in
             req.add_header("Authorization", f"Bearer {cfg['api_key']}")
             with urllib.request.urlopen(req, timeout=timeout) as resp:
                 body = json.loads(resp.read().decode("utf-8"))
-            return body["choices"][0]["message"]["content"]
+            raw_usage = body.get("usage") or {}
+            usage = {
+                "prompt_tokens": raw_usage.get("prompt_tokens") or 0,
+                "completion_tokens": raw_usage.get("completion_tokens") or 0,
+                "total_tokens": raw_usage.get("total_tokens") or 0,
+            }
+            return body["choices"][0]["message"]["content"], usage
         except (urllib.error.URLError, urllib.error.HTTPError, KeyError, json.JSONDecodeError) as exc:
             last_err = str(exc)
             logger.warning(f"LLM judge call failed (attempt {attempt + 1}): {last_err[:200]}")
             time.sleep(1.5 * (attempt + 1))
     logger.error(f"LLM judge gave up: {last_err[:200]}")
-    return None
+    return None, None
 
 
 def _parse_json(raw: str | None) -> dict | None:
@@ -155,10 +211,11 @@ def judge_preference(question: str, answer_a: str, answer_b: str) -> dict:
         "\n\n请比较两个答案的质量（正确性、完整性、相关性），选出更好的一个。"
         "输出 JSON：{\"preferred\": \"A\" 或 \"B\" 或 \"tie\", \"reason\": \"简短中文理由\"}。"
     )
-    raw = _chat_completion([
+    raw, usage = _chat_completion([
         {"role": "system", "content": JUDGE_SYS_PROMPT},
         {"role": "user", "content": user},
     ])
+    _report_judge_to_langfuse("preference", user, raw, usage)
     parsed = _parse_json(raw)
     if not parsed:
         return {"preferred": None, "reason": "judge unavailable"}

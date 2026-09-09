@@ -27,6 +27,8 @@ services:
       CORS_ORIGINS: "*"
       # 允许评测目标指向宿主机/内网自建 Agent（SSRF 防护的可信白名单，逗号分隔）
       LLMOPS_TARGET_ALLOWLIST: "host.docker.internal"
+      # Langfuse judge 用量上报（compose 内网直达）
+      LANGFUSE_HOST: http://langfuse:3000
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -53,6 +55,8 @@ services:
       CELERY_BROKER_URL: redis://redis:6379/1
       CELERY_RESULT_BACKEND: redis://redis:6379/2
       LLMOPS_TARGET_ALLOWLIST: "host.docker.internal"
+      # Langfuse judge 用量上报（compose 内网直达）
+      LANGFUSE_HOST: http://langfuse:3000
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -86,6 +90,39 @@ services:
     depends_on:
       - backend
 
+  # ---- Langfuse v2：LLM 可观测（trace + token 成本），llmops judge 与 mypaperweb 统一上报 ----
+  langfuse-db:
+    image: docker.1ms.run/library/postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: langfuse
+      POSTGRES_PASSWORD: langfuse
+      POSTGRES_DB: langfuse
+    volumes:
+      - langfuse-db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U langfuse"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+
+  langfuse:
+    image: docker.1ms.run/langfuse/langfuse:2
+    restart: unless-stopped
+    env_file:
+      - langfuse.env
+    environment:
+      DATABASE_URL: postgresql://langfuse:langfuse@langfuse-db:5432/langfuse
+      NEXTAUTH_URL: http://localhost:3000
+      PORT: "3000"
+      TELEMETRY_ENABLED: "false"
+    ports:
+      - "3000:3000"
+    depends_on:
+      langfuse-db:
+        condition: service_healthy
+
 volumes:
   redis-data:
   backend-data:
+  langfuse-db-data:

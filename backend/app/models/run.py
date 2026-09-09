@@ -63,6 +63,8 @@ class EvalResult(Base):
     latency_ms: Mapped[int] = mapped_column(Integer, default=0)
     input_tokens: Mapped[int] = mapped_column(Integer, default=0)
     output_tokens: Mapped[int] = mapped_column(Integer, default=0)
+    # Phase 6: target 系统上报的路由/缓存元数据（model/routed/route_tier/cache_hit）
+    target_meta: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     created_at: Mapped[datetime.datetime] = mapped_column(
         DateTime, default=datetime.datetime.utcnow
     )

@@ -123,6 +123,16 @@ export interface DashboardStats {
   total_cases: number;
 }
 
+// 按天聚合的评测趋势（GET /dashboard/trends）
+export interface TrendBucket {
+  date: string;
+  runs: number;
+  avg_score: number | null;
+  pass_rate: number | null;
+  avg_latency_ms: number | null;
+  avg_tokens: number | null;
+}
+
 // ---------- Report ----------
 export interface Report {
   id: number;
