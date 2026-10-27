@@ -29,6 +29,13 @@ services:
       LLMOPS_TARGET_ALLOWLIST: "host.docker.internal"
       # Langfuse judge 用量上报（compose 内网直达）
       LANGFUSE_HOST: http://langfuse:3000
+      # Trace 事件管道：Kafka 削峰 + ClickHouse OLAP
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC_TRACES: llmops.trace.events
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_DB: llmops
+      CLICKHOUSE_USER: llmops
+      CLICKHOUSE_PASSWORD: llmops
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -57,6 +64,13 @@ services:
       LLMOPS_TARGET_ALLOWLIST: "host.docker.internal"
       # Langfuse judge 用量上报（compose 内网直达）
       LANGFUSE_HOST: http://langfuse:3000
+      # Trace 事件管道：Kafka 削峰 + ClickHouse OLAP
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC_TRACES: llmops.trace.events
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_DB: llmops
+      CLICKHOUSE_USER: llmops
+      CLICKHOUSE_PASSWORD: llmops
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -80,6 +94,72 @@ services:
       - "9000:9000"
     depends_on:
       - backend
+
+  # ---- Trace 事件大数据管道：Kafka(KRaft) 削峰 + ClickHouse OLAP 聚合 ----
+  # backend/worker 的 Tracer.end_trace 把 trace 事件发到 Kafka；
+  # ch-worker 消费后批量写入 ClickHouse；Dashboard 高级分析默认查
+  # ClickHouse，不可用时自动降级 SQLite 明细聚合。
+  kafka:
+    image: docker.1ms.run/apache/kafka:3.7.0
+    restart: unless-stopped
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  clickhouse:
+    image: docker.1ms.run/clickhouse/clickhouse-server:24.3
+    restart: unless-stopped
+    environment:
+      CLICKHOUSE_DB: llmops
+      CLICKHOUSE_USER: llmops
+      CLICKHOUSE_PASSWORD: llmops
+    volumes:
+      - clickhouse-data:/var/lib/clickhouse
+    ports:
+      - "8123:8123"
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8123/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Kafka -> ClickHouse 消费者：批量写入 trace 事件（与 backend 共用镜像）
+  ch-worker:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    command: ["python", "-m", "app.analytics_worker"]
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_TOPIC_TRACES: llmops.trace.events
+      CLICKHOUSE_URL: http://clickhouse:8123
+      CLICKHOUSE_DB: llmops
+      CLICKHOUSE_USER: llmops
+      CLICKHOUSE_PASSWORD: llmops
+    depends_on:
+      kafka:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy
 
   frontend:
     build:
@@ -126,3 +206,4 @@ volumes:
   redis-data:
   backend-data:
   langfuse-db-data:
+  clickhouse-data:

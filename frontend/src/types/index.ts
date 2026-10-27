@@ -18,10 +18,16 @@ export interface EvalCase {
   expected_tool: string | null;
   expected_args: Record<string, unknown> | null;
   reference_context_ids: string[] | null;
+  turns: TurnInput[] | null;
   tags: string[] | null;
   difficulty: string | null;
   extra_metadata: Record<string, unknown> | null;
   created_at: string;
+}
+
+export interface TurnInput {
+  user: string;
+  reference: string | null;
 }
 
 // ---------- Version ----------
@@ -168,6 +174,8 @@ export interface TraceStep {
   step_name: string;
   step_type: string;
   parent_step_id: number | null;
+  step_key: string | null;
+  parent_key: string | null;
   input_json: Record<string, unknown> | null;
   output_json: Record<string, unknown> | null;
   latency_ms: number;
@@ -182,6 +190,7 @@ export interface Trace {
   run_id: number | null;
   case_id: number | null;
   user_input: string;
+  session_id: string | null;
   prompt_version: string | null;
   model: string | null;
   retriever_version: string | null;
@@ -197,4 +206,50 @@ export interface Trace {
 export interface ListResponse<T> {
   items: T[];
   total: number;
+}
+
+// ---------- Agentic Ops: Insight (L2) ----------
+export interface InsightResult {
+  judge: string;
+  iterations: number;
+  elapsed_ms: number;
+  failure_distribution: Record<string, number> | null;
+  top_failure_categories: [string, number][] | null;
+  intent_clusters: string[] | null;
+  insight_summary: string;
+  trace?: Array<Record<string, unknown>>;
+}
+
+// ---------- Agentic Ops: Self-Healing (L3 + L4 半闭环) ----------
+export interface ProposedFix {
+  approval_id?: string;
+  tool_name?: string;
+  question?: string;
+  risk_level?: string;
+  status?: string;
+}
+
+export interface ExecutedFix {
+  action: string;
+  run_id?: number;
+  regression_run_id?: number;
+  status?: string;
+  verdict?: string;
+  score_delta?: number | null;
+  completed_cases?: number;
+  total_cases?: number;
+  [key: string]: unknown;
+}
+
+export interface HealingResult {
+  judge: string;
+  iterations: number;
+  elapsed_ms: number;
+  proposed_fixes: ProposedFix[];
+  executed_fixes: ExecutedFix[];
+  regression_run_id: number | null;
+  regression_verdict: 'improved' | 'declined' | 'unchanged' | 'pending' | string;
+  score_delta: number | null;
+  healing_summary: string;
+  trace?: Array<Record<string, unknown>>;
 }

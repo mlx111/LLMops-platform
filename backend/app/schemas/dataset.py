@@ -33,6 +33,11 @@ class DatasetListOut(BaseModel):
 
 
 # ---------- EvalCase ----------
+class TurnInput(BaseModel):
+    user: str
+    reference: str | None = None
+
+
 class EvalCaseCreate(BaseModel):
     case_type: str = "qa"
     input: str
@@ -40,6 +45,7 @@ class EvalCaseCreate(BaseModel):
     expected_tool: str | None = None
     expected_args: dict | None = None
     reference_context_ids: list[str] | None = None
+    turns: list[TurnInput] | None = None
     tags: list[str] | None = None
     difficulty: str | None = None
     extra_metadata: dict | None = None
@@ -52,6 +58,7 @@ class EvalCaseUpdate(BaseModel):
     expected_tool: str | None = None
     expected_args: dict | None = None
     reference_context_ids: list[str] | None = None
+    turns: list[TurnInput] | None = None
     tags: list[str] | None = None
     difficulty: str | None = None
     extra_metadata: dict | None = None
@@ -66,6 +73,7 @@ class EvalCaseOut(BaseModel):
     expected_tool: str | None
     expected_args: dict | None
     reference_context_ids: list[str] | None
+    turns: list[dict] | None = None
     tags: list[str] | None
     difficulty: str | None
     extra_metadata: dict | None

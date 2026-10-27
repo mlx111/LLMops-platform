@@ -17,6 +17,8 @@ const TraceDetail = lazy(() => import('./pages/TraceDetail'));
 const VersionCompare = lazy(() => import('./pages/VersionCompare'));
 const ReportView = lazy(() => import('./pages/ReportView'));
 const Settings = lazy(() => import('./pages/Settings'));
+const Insights = lazy(() => import('./pages/Insights'));
+const Healing = lazy(() => import('./pages/Healing'));
 
 const routeFallback = (
   <div style={{ minHeight: 320, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -43,22 +45,24 @@ const AppLocale: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 
 const App: React.FC = () => (
   <ErrorBoundary>
-  <AppLocale>
-    <BrowserRouter>
-      <Routes>
-        <Route element={<AppLayout />}>
-          <Route path="/" element={<Suspense fallback={routeFallback}><Dashboard /></Suspense>} />
-          <Route path="/datasets" element={<Suspense fallback={routeFallback}><DatasetManagement /></Suspense>} />
-          <Route path="/experiment" element={<Suspense fallback={routeFallback}><ExperimentConfig /></Suspense>} />
-          <Route path="/runs" element={<Suspense fallback={routeFallback}><RunResults /></Suspense>} />
-          <Route path="/runs/:runId/traces" element={<Suspense fallback={routeFallback}><TraceDetail /></Suspense>} />
-          <Route path="/compare" element={<Suspense fallback={routeFallback}><VersionCompare /></Suspense>} />
-          <Route path="/reports" element={<Suspense fallback={routeFallback}><ReportView /></Suspense>} />
-          <Route path="/settings" element={<Suspense fallback={routeFallback}><Settings /></Suspense>} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </AppLocale>
+    <AppLocale>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<AppLayout />}>
+            <Route path="/" element={<Suspense fallback={routeFallback}><Dashboard /></Suspense>} />
+            <Route path="/datasets" element={<Suspense fallback={routeFallback}><DatasetManagement /></Suspense>} />
+            <Route path="/experiment" element={<Suspense fallback={routeFallback}><ExperimentConfig /></Suspense>} />
+            <Route path="/runs" element={<Suspense fallback={routeFallback}><RunResults /></Suspense>} />
+            <Route path="/runs/:runId/traces" element={<Suspense fallback={routeFallback}><TraceDetail /></Suspense>} />
+            <Route path="/compare" element={<Suspense fallback={routeFallback}><VersionCompare /></Suspense>} />
+            <Route path="/reports" element={<Suspense fallback={routeFallback}><ReportView /></Suspense>} />
+            <Route path="/insights" element={<Suspense fallback={routeFallback}><Insights /></Suspense>} />
+            <Route path="/healing" element={<Suspense fallback={routeFallback}><Healing /></Suspense>} />
+            <Route path="/settings" element={<Suspense fallback={routeFallback}><Settings /></Suspense>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AppLocale>
   </ErrorBoundary>
 );
 

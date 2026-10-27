@@ -12,3 +12,6 @@ cryptography>=42.0.0
 mcp>=2.2.0
 # Langfuse v2 SDK（judge 调用上报 trace + token 成本）
 langfuse<3.0.0
+# 大数据管道：trace 事件 → Kafka → ClickHouse（未装/未配置时自动降级）
+kafka-python>=2.0.2
+clickhouse-connect>=0.7.0

@@ -18,6 +18,9 @@ class Trace(Base):
         ForeignKey("eval_cases.id"), nullable=True, index=True
     )
     user_input: Mapped[str] = mapped_column(Text, nullable=False)
+    # Multi-turn traces share one session_id (one trace per case, one parent
+    # span per turn); also used to link to the target system's Langfuse session.
+    session_id: Mapped[str | None] = mapped_column(String(64), nullable=True, index=True)
     prompt_version: Mapped[str | None] = mapped_column(String(255), nullable=True)
     model: Mapped[str | None] = mapped_column(String(255), nullable=True)
     retriever_version: Mapped[str | None] = mapped_column(String(255), nullable=True)
@@ -47,6 +50,11 @@ class TraceStep(Base):
     parent_step_id: Mapped[int | None] = mapped_column(
         ForeignKey("trace_steps.id"), nullable=True
     )
+    # Logical keys for parent/child created during buffered recording: real
+    # PKs do not exist until the single end-of-trace flush, so the tracer
+    # links children via parent_key and resolves parent_step_id at flush time.
+    step_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
+    parent_key: Mapped[str | None] = mapped_column(String(64), nullable=True)
     input_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     output_json: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     latency_ms: Mapped[int] = mapped_column(Integer, default=0)

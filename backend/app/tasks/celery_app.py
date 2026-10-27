@@ -2,6 +2,7 @@
 
 import datetime
 import json
+import uuid
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import requests
@@ -103,12 +104,73 @@ def _evaluate_single_case(
         tracer = Tracer(db)
         config = config_json or {}
 
+        turns = getattr(case, "turns", None)
+        is_multi_turn = (
+            case.case_type == "multi_turn"
+            and isinstance(turns, list)
+            and len(turns) > 0
+        )
+        mt_session_id = (
+            f"llmops-mt-{run_id}-{case.id}-{uuid.uuid4().hex[:8]}"
+            if is_multi_turn else None
+        )
+
         trace_id = tracer.start_trace(
             run_id=run_id,
             case_id=case_id,
             user_input=case_input,
             model=model,
+            session_id=mt_session_id,
         )
+
+        if is_multi_turn:
+            outcome = _run_multi_turn_evaluation(
+                case=case,
+                config=config,
+                tracer=tracer,
+                trace_id=trace_id,
+                session_id=mt_session_id,
+                provider=provider,
+                model=model,
+            )
+
+            result.actual_output = outcome["final_answer"]
+            result.actual_tool = None
+            result.actual_args = None
+            result.scores = outcome["scores"]
+            result.latency_ms = outcome["latency_ms"]
+
+            if outcome["has_target_usage"] or outcome["has_target_errors"]:
+                result.target_meta = outcome["target_meta"]
+            if outcome["has_target_usage"]:
+                result.input_tokens = outcome["target_input_tokens"]
+                result.output_tokens = outcome["target_output_tokens"]
+            else:
+                result.input_tokens = outcome["judge_input_tokens"]
+                result.output_tokens = outcome["judge_output_tokens"]
+
+            all_pass = all(
+                score["success"] for score in outcome["scores"].values()
+            )
+            result.status = "passed" if all_pass else "failed"
+            if not all_pass:
+                result.failure_reason = _classify_failure(
+                    outcome["scores"], case,
+                    # Only the target system's latency describes the SUT;
+                    # judge LLM time is evaluation overhead, not model latency.
+                    latency_ms=outcome["target_latency_ms"],
+                    input_tokens=result.input_tokens,
+                    output_tokens=result.output_tokens,
+                    actual_output=outcome["final_answer"],
+                )
+
+            tracer.end_trace(trace_id, status=result.status)
+            db.commit()
+            return {
+                "result_id": result_id,
+                "status": result.status,
+                "latency_ms": result.latency_ms,
+            }
 
         target_url = config.get("target_url", "")
         with tracer.step(
@@ -240,6 +302,178 @@ def _evaluate_single_case(
         return {"result_id": result_id, "status": "error", "error": str(exc)[:500]}
     finally:
         db.close()
+
+
+def _run_multi_turn_evaluation(
+    case,
+    config: dict,
+    tracer,
+    trace_id: str,
+    session_id: str,
+    provider: str,
+    model: str | None,
+) -> dict:
+    """Drive a multi_turn case turn-by-turn under one shared session.
+
+    Trace shape: one parent ``Turn N`` span per turn wrapping its
+    ``target_call`` child, followed by a single ``evaluation`` span holding
+    the three layered multi-turn scores (per-turn / consistency / completion).
+    """
+    from app.services.multi_turn import evaluate_multi_turn
+
+    target_url = (config or {}).get("target_url", "")
+    turns = case.turns or []
+    turn_records: list[dict] = []
+    target_total_latency = 0
+    target_in_tokens = 0
+    target_out_tokens = 0
+    usages: list[dict] = []
+    target_errors: list[dict] = []
+
+    for i, turn in enumerate(turns, start=1):
+        turn_key = f"turn_{i}"
+        turn_user = str(turn.get("user") or "")
+        turn_reference = turn.get("reference")
+
+        with tracer.step(
+            trace_id, f"Turn {i}", "CHAIN",
+            step_key=turn_key,
+            input_data={"turn": i, "user": turn_user[:500], "session_id": session_id},
+        ) as turn_span:
+            with tracer.step(
+                trace_id,
+                "target_call" if target_url else "target_call (simulated)",
+                "CHAIN",
+                parent_key=turn_key,
+                input_data={
+                    "turn": i,
+                    "query": turn_user[:500],
+                    "target_url": target_url or "(none - demo mode)",
+                    "session_id": session_id,
+                    "bypass_cache": bool(target_url),
+                },
+            ) as call_step:
+                if target_url:
+                    # One failed turn (target timeout / 5xx / quota error)
+                    # must not discard the whole multi-turn trace: record it
+                    # as an empty errored turn and keep driving the session,
+                    # mirroring a user continuing after a failed reply.
+                    try:
+                        (
+                            answer, _tool, _args, turn_latency, _est_tokens,
+                            _trajectory, usage,
+                        ) = _call_target_system(
+                            case, config,
+                            query_override=turn_user,
+                            session_id=session_id,
+                        )
+                    except Exception as exc:  # noqa: BLE001
+                        answer, turn_latency, usage = "", 0, None
+                        turn_error = str(exc)[:300]
+                        target_errors.append({"turn": i, "error": turn_error})
+                        call_step.error_message = turn_error
+                        tracer.set_step_output(
+                            call_step.id,
+                            {"turn": i, "output": "", "error": turn_error},
+                        )
+                    else:
+                        tracer.set_step_output(
+                            call_step.id,
+                            {
+                                "turn": i,
+                                "output": answer[:500],
+                                "output_length": len(answer),
+                            },
+                        )
+                else:
+                    # Demo mode: ideal target echoes the per-turn reference.
+                    answer = str(turn_reference or f"Answer to: {turn_user[:80]}")
+                    turn_latency = 0
+                    usage = None
+                    tracer.set_step_output(
+                        call_step.id,
+                        {
+                            "turn": i,
+                            "output": answer[:500],
+                            "output_length": len(answer),
+                        },
+                    )
+            tracer.set_step_output(
+                turn_span.id,
+                {"turn": i, "session_id": session_id, "answer_length": len(answer)},
+            )
+
+        turn_records.append({
+            "user": turn_user,
+            "reference": turn_reference,
+            "answer": answer,
+        })
+        target_total_latency += turn_latency
+        if usage is not None:
+            usages.append(usage)
+            target_in_tokens += int(usage.get("prompt_tokens") or 0)
+            target_out_tokens += int(usage.get("completion_tokens") or 0)
+
+    # Layered scoring after all turns are driven.
+    try:
+        from app.services.llm_judge import judge_available
+        use_judge = judge_available()
+    except Exception:
+        use_judge = False
+
+    with tracer.step(
+        trace_id, "evaluation", "LLM",
+        input_data={
+            "turns": len(turns),
+            "provider": provider,
+            "judge": "llm" if use_judge else "rule",
+            "metrics": ["PerTurnCorrectness", "ContextualConsistency", "TaskCompletion"],
+        },
+    ) as eval_step:
+        mt = evaluate_multi_turn(
+            turn_records=turn_records,
+            task_overview=case.input or "",
+            overall_reference=case.reference_answer,
+            use_llm_judge=use_judge,
+            model=model,
+        )
+        tracer.set_step_output(
+            eval_step.id,
+            {
+                "scores": mt["scores"],
+                "turn_details": mt["turn_details"],
+                "session_id": session_id,
+            },
+            tokens=mt["input_tokens"] + mt["output_tokens"],
+        )
+
+    target_meta = {"session_id": session_id, "turns": len(turns)}
+    if target_errors:
+        target_meta["turn_errors"] = target_errors
+    if usages:
+        target_meta.update({
+            "cache_hit": any(bool(u.get("cache_hit")) for u in usages),
+            "routed": any(bool(u.get("routed")) for u in usages),
+        })
+        models = sorted({u.get("model") for u in usages if u.get("model")})
+        if models:
+            target_meta["model"] = models[0]
+
+    final_answer = turn_records[-1]["answer"] if turn_records else ""
+
+    return {
+        "scores": mt["scores"],
+        "final_answer": final_answer,
+        "latency_ms": target_total_latency + int(mt.get("latency_ms") or 0),
+        "target_latency_ms": target_total_latency,
+        "has_target_usage": bool(usages),
+        "has_target_errors": bool(target_errors),
+        "target_meta": target_meta,
+        "target_input_tokens": target_in_tokens,
+        "target_output_tokens": target_out_tokens,
+        "judge_input_tokens": int(mt.get("input_tokens") or 0),
+        "judge_output_tokens": int(mt.get("output_tokens") or 0),
+    }
 
 
 def run_evaluation_task(run_id: int):
@@ -443,7 +677,12 @@ def _simulate_ideal_target(case) -> tuple[str, str | None, dict | None, int, int
     return output, actual_tool, actual_args, 0, count_tokens(output, None), trajectory
 
 
-def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | None, int, int, dict | None, dict | None]:
+def _call_target_system(
+    case,
+    config: dict,
+    query_override: str | None = None,
+    session_id: str | None = None,
+) -> tuple[str, str | None, dict | None, int, int, dict | None, dict | None]:
     """
     Call the target RAG/Agent system to get actual output.
     Returns (actual_output, actual_tool, actual_args, latency_ms, token_estimate, trajectory).
@@ -452,7 +691,10 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
     when the target reports an agent step list (used for agent_trajectory eval);
     otherwise ``None``.
 
-    Falls back to _simulate_output if no target_url is configured.
+    ``query_override`` drives a single turn of a multi-turn case (the case's
+    flattened ``input`` is NOT sent); ``session_id`` is forwarded so the target
+    keeps one conversation across turns. Falls back to _simulate_output when no
+    target_url is configured (callers simulate multi-turn turns themselves).
     """
     import time as _time
     from urllib3.util.retry import Retry
@@ -466,9 +708,16 @@ def _call_target_system(case, config: dict) -> tuple[str, str | None, dict | Non
     validate_target_url(target_url)
 
     payload = {
-        "query": case.input,
+        "query": query_override if query_override is not None else case.input,
         "case_type": case.case_type,
     }
+    # Multi-turn: keep the target system's conversation memory under one
+    # session for every turn of this case. Bypass its semantic cache so each
+    # turn really hits the agent (a cross-session cache hit would skip the
+    # history lookup and fake the consistency measurement).
+    if session_id:
+        payload["session_id"] = session_id
+        payload["bypass_cache"] = True
     # 透传 agent 模式（quick/deep）：目标系统据此选择对应 agent；
     # 缺失时由目标系统自行推断（agent_trajectory 默认走 deep）。
     meta = getattr(case, "extra_metadata", None) or {}

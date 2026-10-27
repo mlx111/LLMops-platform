@@ -6,10 +6,12 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.core.redis import get_redis
+from app.config import settings
 from app.database import get_db
 from app.models.dataset import EvalCase
 from app.models.run import EvalResult, EvalRun
 from app.schemas.report import DashboardStats
+from app.services.analytics import build_analytics
 from app.tasks.celery_app import celery_app
 
 LOG_DIR = Path(__file__).resolve().parents[2] / "logs"
@@ -32,11 +34,34 @@ def health_check():
 
     celery_mode = "celery_ready" if worker_ok else "threading_fallback"
 
+    # 大数据管道健康：Kafka broker + ClickHouse（均未配置则显示 disabled）
+    kafka_status = "disabled"
+    clickhouse_status = "disabled"
+    if settings.kafka_bootstrap_servers:
+        try:
+            from kafka import KafkaAdminClient
+
+            admin = KafkaAdminClient(
+                bootstrap_servers=settings.kafka_bootstrap_servers.split(","),
+                request_timeout_ms=3000,
+            )
+            admin.close()
+            kafka_status = "available"
+        except Exception:
+            kafka_status = "unavailable"
+    if settings.clickhouse_url:
+        from app.core.clickhouse import get_clickhouse, reset_client
+
+        reset_client()
+        clickhouse_status = "available" if get_clickhouse() is not None else "unavailable"
+
     return {
         "status": "ok",
         "database": "connected",
         "redis": "available" if redis_ok else "unavailable",
         "celery_mode": celery_mode,
+        "kafka": kafka_status,
+        "clickhouse": clickhouse_status,
         "api_version": "0.1.0",
     }
 
@@ -146,6 +171,20 @@ def get_dashboard_trends(
         )
 
     return {"trend": trend, "runs": run_series[-50:]}
+
+
+@router.get("/dashboard/analytics")
+def get_dashboard_analytics(
+    days: int = Query(default=14, ge=1, le=90),
+    db: Session = Depends(get_db),
+):
+    """高级分析聚合（trace 事件粒度）：ClickHouse 优先，SQLite 降级。
+
+    - ClickHouse：大数据管道（Tracer → Kafka → ch-worker → CH）落库后，
+      按天/按模型/按 span 类型的聚合下推到 CH 向量化执行；
+    - SQLite：CH 不可用时从 traces/trace_steps 明细表算同一套口径。
+    """
+    return build_analytics(days, db)
 
 
 @router.get("/dashboard/stats", response_model=DashboardStats)

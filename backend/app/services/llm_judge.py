@@ -27,6 +27,7 @@ JUDGE_PROVIDERS = [
 ]
 
 _cached_provider: dict | None = None
+_langfuse_client = None
 
 
 def resolve_judge_config() -> dict | None:
@@ -172,7 +173,7 @@ def judge_correctness(question: str, answer: str, reference: str) -> dict:
         "输出 JSON：{\"score\": 0到1的浮点数, \"reason\": \"简短中文理由\"}。"
         "score=1 表示完全正确覆盖，0 表示完全错误或答非所问。"
     )
-    raw = _chat_completion([
+    raw, _usage = _chat_completion([
         {"role": "system", "content": JUDGE_SYS_PROMPT},
         {"role": "user", "content": user},
     ])
@@ -192,7 +193,7 @@ def judge_faithfulness(question: str, answer: str, contexts: list[str]) -> dict:
         "\n\n请判断答案中的陈述有多大比例能由检索上下文直接支持（无编造）。"
         "输出 JSON：{\"score\": 0到1, \"reason\": \"简短中文理由\"}。"
     )
-    raw = _chat_completion([
+    raw, _usage = _chat_completion([
         {"role": "system", "content": JUDGE_SYS_PROMPT},
         {"role": "user", "content": user},
     ])
@@ -223,3 +224,32 @@ def judge_preference(question: str, answer_a: str, answer_b: str) -> dict:
     if preferred not in ("A", "B", "TIE"):
         preferred = "TIE"
     return {"preferred": preferred, "reason": str(parsed.get("reason", ""))[:300]}
+
+
+def judge_contextual_consistency(transcript: str, task_overview: str = "") -> dict:
+    """Multi-turn coherence judge.
+
+    Evaluates whether later turns preserve entities, constraints and decisions
+    established in earlier turns (coreference resolution, no contradictions,
+    progressive task completion). Returns {score, reason}.
+    """
+    user = (
+        ("任务概述：\n" + task_overview + "\n\n" if task_overview else "")
+        + "下面是一段用户与助手的多轮对话记录：\n\n"
+        + transcript
+        + "\n\n请评估助手在跨轮对话中的上下文一致性，重点考察：\n"
+        "1. 后一轮是否正确承接前轮提到的实体/对象（代词指代正确）；\n"
+        "2. 前轮已确认的约束、决定、结论在后轮是否被保持（无前后矛盾）；\n"
+        "3. 回答是否随对话推进逐步完成整体任务，而非每轮重新开始。\n"
+        "输出 JSON：{\"score\": 0到1, \"reason\": \"简短中文理由，指出具体的承接或断裂点\"}。"
+        "score=1 表示全程连贯，0 表示完全丢失上下文或严重自相矛盾。"
+    )
+    raw, usage = _chat_completion([
+        {"role": "system", "content": JUDGE_SYS_PROMPT},
+        {"role": "user", "content": user},
+    ])
+    _report_judge_to_langfuse("contextual_consistency", user, raw, usage)
+    parsed = _parse_json(raw)
+    if not parsed:
+        return {"score": None, "reason": "judge unavailable"}
+    return {"score": _clamp01(parsed.get("score")), "reason": str(parsed.get("reason", ""))[:500]}

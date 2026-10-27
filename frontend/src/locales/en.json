@@ -9,6 +9,8 @@
       "runs": "Run Results",
       "compare": "Version Compare",
       "reports": "Reports",
+      "insights": "Insights",
+      "healing": "Self-Heal",
       "settings": "Settings"
     },
     "langSwitch": "中文"
@@ -184,7 +186,9 @@
     "steps": "Steps",
     "titleDetail": "Trace Detail: {{traceId}}",
     "model": "Model",
-    "caseId": "Case ID"
+    "caseId": "Case ID",
+    "session": "Session ID",
+    "viewInLangfuse": "View this session in Langfuse"
   },
   "versionCompare": {
     "title": "Version Compare",
@@ -266,6 +270,56 @@
   "failurePieChart": {
     "noData": "No failure data",
     "title": "Failure Distribution"
+  },
+  "insights": {
+    "title": "Agentic Insights (L2 Insight Agent)",
+    "desc": "Cross-run aggregation ReAct: auto-scans historical eval runs to surface systematic failure patterns + clusters user intents. Synchronous, ~15-30s.",
+    "days": "Lookback days",
+    "generate": "Generate Insights",
+    "generated": "Insights generated",
+    "regenerate": "Regenerate",
+    "judge": "Judge",
+    "iterations": "ReAct iters",
+    "elapsed": "Elapsed",
+    "failureDist": "Failure Distribution",
+    "intentClusters": "User Intent Clusters",
+    "summary": "Insight Summary",
+    "trace": "ReAct Trace",
+    "iter": "Iter",
+    "rawTrace": "Raw Trace JSON",
+    "noData": "Click \"Generate Insights\" to launch the L2 Insight Agent",
+    "timeoutHint": "Agent runs multi-round ReAct synchronously (one LLM call per round) — please wait"
+  },
+  "healing": {
+    "title": "Agentic Self-Healing (L3 Self-Heal + L4 half-closed loop)",
+    "desc": "Detect failures → propose fixes (high-risk gated by HITL human approval) → trigger regression run → auto-compare regression result (verdict + score_delta).",
+    "selectRun": "Select run",
+    "selectRunPlaceholder": "Select an eval run with failed cases",
+    "run": "Run Self-Heal",
+    "done": "Self-Heal agent finished",
+    "rerun": "Re-run",
+    "judge": "Judge",
+    "iterations": "ReAct iters",
+    "elapsed": "Elapsed",
+    "verdict": "Regression verdict",
+    "scoreDelta": "Score delta",
+    "regressionRunId": "Regression run",
+    "proposedFixes": "Proposed Fixes (high-risk, awaiting HITL approval)",
+    "executedFixes": "Executed Actions (low-risk, applied directly)",
+    "approvalId": "Approval ID",
+    "toolName": "Tool",
+    "question": "Fix description",
+    "risk": "Risk",
+    "status": "Status",
+    "action": "Action",
+    "runId": "run ID",
+    "summary": "Healing Summary",
+    "trace": "ReAct Trace",
+    "iter": "Iter",
+    "rawTrace": "Raw Trace JSON",
+    "noData": "Select a run and click \"Run Self-Heal\"",
+    "pendingHint": "The regression run is executed asynchronously via Celery; when the agent returns synchronously it may not be finished yet, so verdict=pending means awaiting comparison. Re-run after the regression run completes to get the final score_delta.",
+    "timeoutHint": "Agent runs multi-round ReAct synchronously (one LLM call + possible HTTP to mypaperweb HITL per round) — please wait"
   },
   "compareTable": {
     "none": "-- None --"

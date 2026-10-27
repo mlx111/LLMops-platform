@@ -18,6 +18,7 @@ def _build_trace_out(trace: Trace) -> TraceOut:
         run_id=trace.run_id,
         case_id=trace.case_id,
         user_input=trace.user_input,
+        session_id=trace.session_id,
         prompt_version=trace.prompt_version,
         model=trace.model,
         retriever_version=trace.retriever_version,

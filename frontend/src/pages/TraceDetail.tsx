@@ -1,14 +1,22 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Card, Descriptions, Spin, Tag, Table, Typography, Alert } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { Card, Descriptions, Spin, Tag, Table, Typography, Alert, Button, Space } from 'antd';
+import { ArrowLeftOutlined, ExportOutlined } from '@ant-design/icons';
 import { traceApi } from '../api/client';
 import CartesianChart from '../components/charts/CartesianChart';
 import TraceTree from '../components/TraceTree';
 import type { Trace, TraceStep } from '../types';
 
 const { Title, Paragraph } = Typography;
+
+// Black-box eval traces link to the target system's white-box Langfuse view:
+// both sides share the same session_id for multi-turn cases.
+const LANGFUSE_BASE = (
+  (import.meta.env.VITE_LANGFUSE_URL as string | undefined) || 'http://localhost:3000'
+).replace(/\/+$/, '');
+const langfuseSessionUrl = (sessionId: string) =>
+  `${LANGFUSE_BASE}/traces?session=${encodeURIComponent(sessionId)}`;
 
 const statusColors: Record<string, string> = {
   success: 'success', error: 'error', running: 'processing',
@@ -60,16 +68,21 @@ const TraceDetail: React.FC = () => {
   // ── Timeline waterfall chart ──
   const waterfallOption = useMemo(() => {
     if (!selectedTrace || selectedTrace.steps.length === 0) return {};
-    const steps = selectedTrace.steps;
+    // Waterfall shows leaf steps only (multi-turn Turn N parents would
+    // duplicate their children's durations); the tree below shows hierarchy.
+    const parentIds = new Set(selectedTrace.steps.map((s) => s.parent_step_id).filter((v): v is number => v != null));
+    const steps = selectedTrace.steps.filter((s) => !parentIds.has(s.id));
 
     return {
       tooltip: {
         trigger: 'axis',
         axisPointer: { type: 'shadow' },
-        formatter: (params: { name: string; value: number; color: string; seriesName: string }[]) => {
+        formatter: (params: { name: string; value: number; color: string; seriesName: string; dataIndex?: number }[]) => {
           if (!params || params.length === 0) return '';
           const p = params[0];
-          const step = steps.find((s) => s.step_name === p.name);
+          // Match by row index, not name: multi-turn traces contain repeated
+          // "target_call" steps under different Turn N parents.
+          const step = typeof p.dataIndex === 'number' ? steps[p.dataIndex] : undefined;
           return `${p.name}<br/>${p.seriesName}: ${p.value}ms${step ? `<br/>Type: ${step.step_type}` : ''}`;
         },
       },
@@ -134,6 +147,24 @@ const TraceDetail: React.FC = () => {
                 <Descriptions.Item label={t('traceDetail.model')}>{selectedTrace.model || '-'}</Descriptions.Item>
                 <Descriptions.Item label={t('traceDetail.caseId')}>{selectedTrace.case_id || '-'}</Descriptions.Item>
                 <Descriptions.Item label={t('traceDetail.created')}>{new Date(selectedTrace.created_at).toLocaleString()}</Descriptions.Item>
+                <Descriptions.Item label={t('traceDetail.session')} span={3}>
+                  {selectedTrace.session_id ? (
+                    <Space size={8} wrap>
+                      <code>{selectedTrace.session_id}</code>
+                      <Button
+                        type="link"
+                        size="small"
+                        href={langfuseSessionUrl(selectedTrace.session_id)}
+                        target="_blank"
+                        rel="noreferrer"
+                        icon={<ExportOutlined />}
+                        style={{ padding: 0 }}
+                      >
+                        {t('traceDetail.viewInLangfuse')}
+                      </Button>
+                    </Space>
+                  ) : '-'}
+                </Descriptions.Item>
               </Descriptions>
 
               {selectedTrace.error_message && (
@@ -143,7 +174,7 @@ const TraceDetail: React.FC = () => {
               {/* Waterfall chart */}
               {selectedTrace.steps.length > 0 && (
                 <Card title={t('traceDetail.stepTimeline')} size="small" style={{ marginBottom: 16 }}>
-                  <CartesianChart option={waterfallOption} style={{ height: Math.max(200, selectedTrace.steps.length * 36 + 40) }} />
+                  <CartesianChart option={waterfallOption} style={{ height: Math.max(200, selectedTrace.steps.filter((s) => !selectedTrace.steps.some((o) => o.parent_step_id === s.id)).length * 36 + 40) }} />
                 </Card>
               )}
 

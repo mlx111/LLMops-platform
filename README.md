@@ -225,8 +225,31 @@ frontend/ (React + Vite + TypeScript + Ant Design + ECharts)
                      ├── 路由: datasets, versions, runs, traces, reports, config, dashboard
                      ├── 服务: runner, tracer, classifier, report_generator, provider_models
                      ├── 任务: celery_app (Redis / 线程回退)
-                     └── 数据库: SQLite (8 张表)
+                     ├── 大数据管道: trace_stream → Kafka → ch-worker → ClickHouse
+                     └── 数据库: SQLite (8 张表) | 分析库: ClickHouse (trace_events)
 ```
+
+### Trace 事件大数据管道（Kafka + ClickHouse）
+
+评测并发生成的 trace/span 是典型的 append-only 时序事件流，平台内置一条
+OLAP 分析管道（对标 Langfuse v3 的 Kafka + ClickHouse 架构）：
+
+```
+Tracer.end_trace ──► Kafka (llmops.trace.events) ──► ch-worker (微批消费) ──► ClickHouse
+                                                                    │
+Dashboard GET /api/dashboard/analytics ─────────────────────────────┘
+（ClickHouse 聚合优先：按天趋势 / P95 延迟 / 按模型 / 按 span 类型；
+  CH 不可用时自动降级 SQLite 明细表聚合，source 字段标明数据来源）
+```
+
+- **削峰解耦**：评测 worker 只管把事件发到 Kafka（`key=run_id` 保证 run 内有序），
+  ClickHouse 的写入吞吐与可用性不再影响评测主流程；
+- **at-least-once**：ch-worker 手动提交 offset，CH 写入失败不提交、重启重放补数；
+- **零侵入降级**：未配置 `KAFKA_BOOTSTRAP_SERVERS` / `CLICKHOUSE_URL` 或
+  kafka-python / clickhouse-connect 未安装时，管道整体关闭，平台行为与原先完全一致。
+
+相关配置（docker.env）：`KAFKA_BOOTSTRAP_SERVERS`、`KAFKA_TOPIC_TRACES`、
+`CLICKHOUSE_URL`、`CLICKHOUSE_DB`、`CLICKHOUSE_USER`、`CLICKHOUSE_PASSWORD`。
 
 ### 数据库表
 

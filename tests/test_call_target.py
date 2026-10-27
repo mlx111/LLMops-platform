@@ -21,7 +21,7 @@ class FakeCase:
 def test_falls_back_to_simulate_when_no_target_url():
     """Without target_url, returns simulated output with zero latency."""
     case = FakeCase(input="Hello", reference_answer="Hello world")
-    output, tool, args, latency, tokens = _call_target_system(case, {})
+    output, tool, args, latency, tokens, trajectory, target_usage = _call_target_system(case, {})
     assert output == "Hello world"
     assert tool is None
     assert args is None
@@ -31,7 +31,7 @@ def test_falls_back_to_simulate_when_no_target_url():
 def test_falls_back_when_target_url_empty_string():
     """Empty target_url also triggers fallback."""
     case = FakeCase(input="Hello")
-    output, tool, args, latency, tokens = _call_target_system(case, {"target_url": ""})
+    output, tool, args, latency, tokens, trajectory, target_usage = _call_target_system(case, {"target_url": ""})
     assert latency == 0
 
 
@@ -97,7 +97,7 @@ def test_parses_response_fields(mock_session_class):
     mock_session_class.return_value = mock_session
 
     case = FakeCase(input="What is 6*7?", expected_tool="calculator")
-    output, tool, args, latency, tokens = _call_target_system(case, {
+    output, tool, args, latency, tokens, trajectory, target_usage = _call_target_system(case, {
         "target_url": "http://example.com/api",
     })
 
@@ -118,7 +118,7 @@ def test_tries_multiple_response_field_names(mock_session_class):
     mock_session_class.return_value = mock_session
 
     case = FakeCase(input="Hi")
-    output, tool, args, latency, tokens = _call_target_system(case, {
+    output, tool, args, latency, tokens, trajectory, target_usage = _call_target_system(case, {
         "target_url": "http://example.com/api",
     })
 
@@ -136,7 +136,7 @@ def test_returns_empty_string_on_empty_response(mock_session_class):
     mock_session_class.return_value = mock_session
 
     case = FakeCase(input="Hi")
-    output, tool, args, latency, tokens = _call_target_system(case, {
+    output, tool, args, latency, tokens, trajectory, target_usage = _call_target_system(case, {
         "target_url": "http://example.com/api",
     })
 

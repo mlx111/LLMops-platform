@@ -105,3 +105,23 @@ export const traceApi = {
   byRun: (runId: number, params?: { skip?: number; limit?: number }) =>
     api.get(`/runs/${runId}/traces`, { params }),
 };
+
+// Agentic Ops — Insight (L2) & Self-Healing (L3 + L4 半闭环)
+// agent 同步执行 ReAct loop（每轮一次 LLM 调用 + 可能 HTTP 调 mypaperweb HITL），
+// 实测 ~17-30s，故用 180s 超时覆盖默认 30s。
+export const insightApi = {
+  generate: (days: number) =>
+    api.get<unknown, { data: import('../types').InsightResult }>('/insights/generate', {
+      params: { days },
+      timeout: 180000,
+    }),
+};
+
+export const healingApi = {
+  run: (runId: number) =>
+    api.post<unknown, { data: import('../types').HealingResult }>(
+      '/healing/run',
+      {},
+      { params: { run_id: runId }, timeout: 180000 },
+    ),
+};

@@ -9,6 +9,8 @@
       "runs": "运行结果",
       "compare": "版本对比",
       "reports": "报告",
+      "insights": "洞察",
+      "healing": "自愈",
       "settings": "设置"
     },
     "langSwitch": "English"
@@ -180,7 +182,9 @@
     "steps": "步骤数",
     "titleDetail": "追踪详情：{{traceId}}",
     "model": "模型",
-    "caseId": "用例 ID"
+    "caseId": "用例 ID",
+    "session": "会话 ID",
+    "viewInLangfuse": "在 Langfuse 中查看该会话"
   },
   "versionCompare": {
     "title": "版本对比",
@@ -262,6 +266,56 @@
   "failurePieChart": {
     "noData": "暂无失败数据",
     "title": "失败分布"
+  },
+  "insights": {
+    "title": "Agentic 洞察（L2 Insight Agent）",
+    "desc": "跨 run 聚合 ReAct：自动扫历史评测 run，归纳系统性失败模式 + 聚类用户意图。agent 同步执行约 15-30s。",
+    "days": "回溯天数",
+    "generate": "生成洞察",
+    "generated": "洞察已生成",
+    "regenerate": "重新生成",
+    "judge": "判定",
+    "iterations": "ReAct 轮次",
+    "elapsed": "耗时",
+    "failureDist": "失败分布",
+    "intentClusters": "用户意图聚类",
+    "summary": "洞察总结",
+    "trace": "ReAct 轨迹",
+    "iter": "第",
+    "rawTrace": "原始轨迹 JSON",
+    "noData": "点击「生成洞察」启动 L2 Insight Agent",
+    "timeoutHint": "agent 同步执行多轮 ReAct（每轮一次 LLM 调用），请耐心等待"
+  },
+  "healing": {
+    "title": "Agentic 自愈（L3 Self-Healing + L4 半闭环）",
+    "desc": "发现失败 → 提议修复（高风险走 HITL 卡人工审批）→ 触发回归评测 → 自动对比回归结果（verdict + score_delta）。",
+    "selectRun": "选择 run",
+    "selectRunPlaceholder": "选择一个有失败 case 的评测 run",
+    "run": "启动自愈",
+    "done": "自愈 Agent 执行完成",
+    "rerun": "重新执行",
+    "judge": "判定",
+    "iterations": "ReAct 轮次",
+    "elapsed": "耗时",
+    "verdict": "回归判定",
+    "scoreDelta": "分数差值",
+    "regressionRunId": "回归 run",
+    "proposedFixes": "提议的修复（高风险，待 HITL 审批）",
+    "executedFixes": "已执行的动作（低风险直接执行）",
+    "approvalId": "审批 ID",
+    "toolName": "工具",
+    "question": "修复说明",
+    "risk": "风险",
+    "status": "状态",
+    "action": "动作",
+    "runId": "run ID",
+    "summary": "自愈总结",
+    "trace": "ReAct 轨迹",
+    "iter": "第",
+    "rawTrace": "原始轨迹 JSON",
+    "noData": "选择一个 run 后点击「启动自愈」",
+    "pendingHint": "回归 run 是 Celery 异步执行，agent 同步返回时可能尚未跑完，verdict=pending 表示待后续对比。等回归 run 完成后重新执行可拿到最终 score_delta。",
+    "timeoutHint": "agent 同步执行多轮 ReAct（每轮一次 LLM 调用 + 可能 HTTP 调 mypaperweb HITL），请耐心等待"
   },
   "compareTable": {
     "none": "-- 无 --"

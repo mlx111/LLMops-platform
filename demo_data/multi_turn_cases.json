@@ -1,7 +1,115 @@
 [
-  {"case_type":"multi_turn","input":"Turn 1: User asks about setting up a Python virtual environment. Turn 2: User asks how to install packages in it. Turn 3: User asks how to export requirements. Evaluate if the assistant provides a coherent, complete guide across all turns.","reference_answer":"Turn 1: Explain python -m venv myenv and activating it on different OS. Turn 2: Explain pip install with the activated environment. Turn 3: Explain pip freeze > requirements.txt and mention pip install -r for reproducibility. All answers should reference prior turns and build a connected tutorial.","tags":["tutorial","programming"],"difficulty":"easy"},
-  {"case_type":"multi_turn","input":"Turn 1: The user wants to plan a 3-day trip to Kyoto. Turn 2: The user asks for hotel recommendations near the train station. Turn 3: The user asks about local food specialties. Turn 4: The user asks to summarize the itinerary. Evaluate contextual consistency across turns.","reference_answer":"Turn 1: Suggest key attractions (Fushimi Inari, Kinkakuji, Arashiyama) organized by day with travel tips. Turn 2: Recommend hotels near Kyoto Station considering the suggested itinerary locations. Turn 3: Describe kaiseki cuisine, matcha sweets, yudofu with references to where these can be found near planned stops. Turn 4: Provide a cohesive day-by-day summary integrating all previous information.","tags":["travel","planning"],"difficulty":"medium"},
-  {"case_type":"multi_turn","input":"Turn 1: Debug a Python TypeError with None. Turn 2: The user provides stack trace. Turn 3: The user confirms fix but asks about prevention. Evaluate if the assistant maintains debugging context and offers preventive advice.","reference_answer":"Turn 1: Explain common causes of NoneType errors, ask for stack trace. Turn 2: Identify the specific issue from the traceback, suggest adding null checks or using Optional type hints. Turn 3: Explain defensive programming patterns: early returns, Optional type annotations, mypy static checking, and writing unit tests for edge cases.","tags":["debugging","programming"],"difficulty":"medium"},
-  {"case_type":"multi_turn","input":"Turn 1: Compare Python and Go for backend development. Turn 2: User asks about concurrency models specifically. Turn 3: User asks for a recommendation based on their use case of high-concurrency API service. Evaluate depth and contextual relevance.","reference_answer":"Turn 1: Python advantages in ecosystem and development speed, Go advantages in performance and deployment. Turn 2: Explain Python's asyncio/GIL and multiprocessing vs Go's goroutines and channels. Turn 3: Given high-concurrency API requirements, recommend Go with justification (lightweight goroutines, built-in concurrency primitives, compiled performance), but acknowledge Python with FastAPI + async workers is also viable if team expertise is Python.","tags":["programming","comparison"],"difficulty":"hard"},
-  {"case_type":"multi_turn","input":"Turn 1: User wants to learn system design for interview preparation. Turn 2: User asks about designing a URL shortener. Turn 3: User asks how to handle 100M daily active users. Turn 4: User asks about database choice tradeoffs. Evaluate progressive deepening of technical detail.","reference_answer":"Turn 1: Outline key system design topics (scalability, caching, databases, load balancing). Turn 2: Walk through URL shortener design: encoding algorithm (base62), API design, storage estimation. Turn 3: Scale to 100M DAU: add CDN, Redis caching layer, read replicas, rate limiting, geographic distribution. Turn 4: Compare SQL (ACID, simpler analytics) vs NoSQL (better horizontal scaling, flexible schema) for this use case, suggesting PostgreSQL for metadata + Redis for hot redirects.","tags":["system-design","interview"],"difficulty":"hard"}
+  {
+    "case_type": "multi_turn",
+    "input": "Coherent end-to-end Python virtual environment tutorial across 3 connected turns (create env, install packages, export requirements).",
+    "reference_answer": "Turn 1: Explain python -m venv myenv and activating it on different OS. Turn 2: Explain pip install with the activated environment. Turn 3: Explain pip freeze > requirements.txt and mention pip install -r for reproducibility. All answers should reference prior turns and build a connected tutorial.",
+    "turns": [
+      {
+        "user": "How do I set up a Python virtual environment for a new project?",
+        "reference": "Explain creating a virtual environment with python -m venv myenv, and how to activate it: source myenv/bin/activate on macOS/Linux and myenv\\Scripts\\activate on Windows."
+      },
+      {
+        "user": "Once it's activated, how do I install packages into it?",
+        "reference": "Explain using pip install <package> while the virtual environment is activated, so packages go into the venv rather than the global interpreter; mention python -m pip as an alternative."
+      },
+      {
+        "user": "Great. How do I export those installed packages so a teammate can reproduce the same environment?",
+        "reference": "Explain pip freeze > requirements.txt to capture exact versions, and pip install -r requirements.txt on the teammate's machine to recreate the environment, noting the file is usually committed to version control."
+      }
+    ],
+    "tags": ["tutorial", "programming"],
+    "difficulty": "easy"
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Plan a 3-day Kyoto trip across 4 turns: itinerary, hotels near the station, local food, and a final integrated summary that references prior turns.",
+    "reference_answer": "Turn 1: Suggest key attractions (Fushimi Inari, Kinkakuji, Arashiyama) organized by day with travel tips. Turn 2: Recommend hotels near Kyoto Station considering the suggested itinerary locations. Turn 3: Describe kaiseki cuisine, matcha sweets, yudofu with references to where these can be found near planned stops. Turn 4: Provide a cohesive day-by-day summary integrating all previous information.",
+    "turns": [
+      {
+        "user": "I'm planning a 3-day trip to Kyoto. Can you suggest an itinerary with the main attractions?",
+        "reference": "Suggest key attractions such as Fushimi Inari Taisha with its torii gates, Kinkaku-ji (Golden Pavilion), Arashiyama bamboo grove, Kiyomizu-dera and Gion, organized across the 3 days with tips on transport (buses/subway) and timing."
+      },
+      {
+        "user": "Which area should I stay in? I'd prefer a hotel near Kyoto Station.",
+        "reference": "Recommend hotels near Kyoto Station, explaining it is a convenient transport hub for reaching the attractions in the suggested itinerary (Shinkansen, subway, bus terminal), with options across budget ranges."
+      },
+      {
+        "user": "What local food should I try, ideally near the places you already mentioned?",
+        "reference": "Describe kaiseki multi-course cuisine, matcha sweets in Uji or near Kinkaku-ji, and yudofu tofu hotpot near Nanzen-ji/Arashiyama, tying each to a neighborhood from the itinerary."
+      },
+      {
+        "user": "Can you now give me a concise day-by-day summary that ties together the itinerary, hotel, and food?",
+        "reference": "Provide a cohesive day-by-day plan that integrates the earlier attractions, the Kyoto Station hotel as base, and where to eat each day, without contradicting earlier recommendations."
+      }
+    ],
+    "tags": ["travel", "planning"],
+    "difficulty": "medium"
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Debug a NoneType TypeError across 3 turns (initial diagnosis, stack trace provided, prevention after fix), checking the assistant keeps debugging context.",
+    "reference_answer": "Turn 1: Explain common causes of NoneType errors, ask for stack trace. Turn 2: Identify the specific issue from the traceback, suggest adding null checks or using Optional type hints. Turn 3: Explain defensive programming patterns: early returns, Optional type annotations, mypy static checking, and writing unit tests for edge cases.",
+    "turns": [
+      {
+        "user": "My Python program crashed with TypeError: unsupported operand type(s) for +: 'NoneType' and 'int'. What could cause this?",
+        "reference": "Explain that a variable expected to be an int is None, commonly because a function returned None (missing return, failed lookup, or default), and ask for the full stack trace to pinpoint the line."
+      },
+      {
+        "user": "Here's the traceback: File 'orders.py', line 42, total = price + tax, where price came from get_price(order.id).",
+        "reference": "Identify that get_price() returned None (e.g., order not found or missing price in the DB), and suggest handling it: explicit None check, default value via dict.get/or, or raising a domain-specific error."
+      },
+      {
+        "user": "That fixed it. How can I prevent this class of bug across the whole codebase?",
+        "reference": "Recommend defensive programming: early returns/guards, Optional type annotations on functions that may return None, running mypy/pyright in CI, and unit tests covering not-found/edge cases, tying back to the get_price root cause."
+      }
+    ],
+    "tags": ["debugging", "programming"],
+    "difficulty": "medium"
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "Python vs Go backend decision across 3 turns (general comparison, concurrency models, final recommendation for a high-concurrency API service).",
+    "reference_answer": "Turn 1: Python advantages in ecosystem and development speed, Go advantages in performance and deployment. Turn 2: Explain Python's asyncio/GIL and multiprocessing vs Go's goroutines and channels. Turn 3: Given high-concurrency API requirements, recommend Go with justification (lightweight goroutines, built-in concurrency primitives, compiled performance), but acknowledge Python with FastAPI + async workers is also viable if team expertise is Python.",
+    "turns": [
+      {
+        "user": "For backend development, how do Python and Go compare in general?",
+        "reference": "Compare Python (huge ecosystem, fast development, dynamic typing, slower per-request performance) with Go (compiled single binaries, strong standard library, static typing, better concurrency and lower memory footprint)."
+      },
+      {
+        "user": "How do their concurrency models differ specifically?",
+        "reference": "Explain Python's GIL limiting CPU-bound threads, asyncio event loop for I/O concurrency, and multiprocessing for CPU work; contrast with Go's goroutines (lightweight M:N scheduling), channels for communication, and select for multiplexing."
+      },
+      {
+        "user": "Given that, what would you recommend for a high-concurrency API service?",
+        "reference": "Recommend Go for high-concurrency APIs because of cheap goroutines, built-in concurrency primitives, low memory and easy deployment, while acknowledging Python with FastAPI plus async workers is viable when team expertise or ML-library integration matters."
+      }
+    ],
+    "tags": ["programming", "comparison"],
+    "difficulty": "hard"
+  },
+  {
+    "case_type": "multi_turn",
+    "input": "System design interview prep across 4 turns (study plan, URL shortener design, scaling to 100M DAU, database choice), evaluating progressive deepening and consistency.",
+    "reference_answer": "Turn 1: Outline key system design topics (scalability, caching, databases, load balancing). Turn 2: Walk through URL shortener design: encoding algorithm (base62), API design, storage estimation. Turn 3: Scale to 10M DAU: add CDN, Redis caching layer, read replicas, rate limiting, geographic distribution. Turn 4: Compare SQL (ACID, simpler analytics) vs NoSQL (better horizontal scaling, flexible schema) for this use case, suggesting PostgreSQL for metadata + Redis for hot redirects.",
+    "turns": [
+      {
+        "user": "I want to prepare for system design interviews. What are the core topics I should study?",
+        "reference": "Outline core topics: scalability (vertical/horizontal), load balancing, caching, databases and replication, partitioning, message queues, CDNs, and CAP theorem, with practice on estimation and API design."
+      },
+      {
+        "user": "Let's practice: how would you design a URL shortener like bit.ly?",
+        "reference": "Walk through requirements (short URL generation, redirection, analytics), base62 encoding of an incrementing ID, key generation service, API endpoints, storage schema (mapping short key to long URL), and basic capacity estimates."
+      },
+      {
+        "user": "How would that design change to handle 100 million daily active users?",
+        "reference": "Extend the design with a Redis cache for hot redirects, read replicas, DB sharding by short key, CDN for static assets, rate limiting, geographic distribution, and consistent hashing, keeping consistency with the earlier base62/ID design."
+      },
+      {
+        "user": "Would you use SQL or NoSQL for the storage layer of that design?",
+        "reference": "Compare SQL (ACID guarantees, straightforward analytics, harder horizontal scaling) with NoSQL (easy horizontal scaling, flexible schema), recommend PostgreSQL for short-link metadata and analytics plus Redis for the hot redirect path, consistent with the caching/sharding from the previous turn."
+      }
+    ],
+    "tags": ["system-design", "interview"],
+    "difficulty": "hard"
+  }
 ]

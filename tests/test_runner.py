@@ -254,7 +254,7 @@ def test_single_case_eval_fails_when_target_omits_expected_tool(monkeypatch, tmp
     session.close()
 
     monkeypatch.setattr(celery_app, "_call_target_system", lambda case, config: (
-        "Found 5 papers.", None, None, 12, 3
+        "Found 5 papers.", None, None, 12, 3, None, None
     ))
     monkeypatch.setattr(celery_app, "SessionLocal", TestingSessionLocal, raising=False)
     monkeypatch.setattr("app.database.SessionLocal", TestingSessionLocal)

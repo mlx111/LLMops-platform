@@ -7,6 +7,8 @@ class TraceStepOut(BaseModel):
     step_name: str
     step_type: str
     parent_step_id: int | None
+    step_key: str | None = None
+    parent_key: str | None = None
     input_json: dict | None
     output_json: dict | None
     latency_ms: int
@@ -23,6 +25,7 @@ class TraceOut(BaseModel):
     run_id: int | None
     case_id: int | None
     user_input: str
+    session_id: str | None = None
     prompt_version: str | None
     model: str | None
     retriever_version: str | None

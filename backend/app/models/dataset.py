@@ -36,6 +36,10 @@ class EvalCase(Base):
     expected_tool: Mapped[str | None] = mapped_column(String(255), nullable=True)
     expected_args: Mapped[dict | None] = mapped_column(JSON, nullable=True)
     reference_context_ids: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
+    # Multi-turn cases: [{"user": str, "reference": str|None}, ...]. When
+    # present, the runner drives the target turn-by-turn under one session_id
+    # instead of sending the flattened ``input`` as a single query.
+    turns: Mapped[list[dict] | None] = mapped_column(JSON, nullable=True)
     tags: Mapped[list[str] | None] = mapped_column(JSON, nullable=True)
     difficulty: Mapped[str | None] = mapped_column(String(20), nullable=True)
     extra_metadata: Mapped[dict | None] = mapped_column("metadata", JSON, nullable=True)

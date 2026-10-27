@@ -10,6 +10,8 @@ import {
   SettingOutlined,
   SwapOutlined,
   FileTextOutlined,
+  BulbOutlined,
+  ToolOutlined,
 } from '@ant-design/icons';
 
 const { Header, Sider, Content } = AntLayout;
@@ -29,6 +31,8 @@ const AppLayout: React.FC = () => {
     { key: '/runs', icon: <BarChartOutlined />, label: t('layout.menu.runs') },
     { key: '/compare', icon: <SwapOutlined />, label: t('layout.menu.compare') },
     { key: '/reports', icon: <FileTextOutlined />, label: t('layout.menu.reports') },
+    { key: '/insights', icon: <BulbOutlined />, label: t('layout.menu.insights') },
+    { key: '/healing', icon: <ToolOutlined />, label: t('layout.menu.healing') },
     { key: '/settings', icon: <SettingOutlined />, label: t('layout.menu.settings') },
   ];
 

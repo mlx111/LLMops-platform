@@ -91,6 +91,8 @@ describe('TraceTree', () => {
     step_name: 'llm_call',
     step_type: 'LLM',
     parent_step_id: null,
+    step_key: null,
+    parent_key: null,
     input_json: { prompt: 'Hello' },
     output_json: { response: 'Hi there' },
     latency_ms: 150,
@@ -201,6 +203,8 @@ describe('AppLayout', () => {
     expect(screen.getByText('Run Results')).toBeInTheDocument();
     expect(screen.getByText('Version Compare')).toBeInTheDocument();
     expect(screen.getByText('Reports')).toBeInTheDocument();
+    expect(screen.getByText('Insights')).toBeInTheDocument();
+    expect(screen.getByText('Self-Heal')).toBeInTheDocument();
     expect(screen.getByText('Settings')).toBeInTheDocument();
   });
 

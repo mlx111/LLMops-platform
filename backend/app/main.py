@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
 from app.database import Base, engine
-from app.routers import datasets, versions, runs, dashboard, config_router, traces, reports, calibration
+from app.routers import datasets, versions, runs, dashboard, config_router, traces, reports, calibration, insights, healing
 
 
 def create_app() -> FastAPI:
@@ -38,13 +38,17 @@ def create_app() -> FastAPI:
     app.include_router(traces.router)
     app.include_router(reports.router)
     app.include_router(calibration.router)
+    app.include_router(insights.router)
+    app.include_router(healing.router)
 
     @app.on_event("startup")
     def auto_seed_demo_data():
         """Seed demo datasets on first run if DB is empty."""
+        from app.db_migrations import ensure_additive_columns
         from app.seed import seed
 
         Base.metadata.create_all(bind=engine)
+        ensure_additive_columns(engine)
         seed()
 
     return app

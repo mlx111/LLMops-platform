@@ -23,6 +23,8 @@ def seed(force: bool = False) -> dict[str, int]:
     Skips datasets that already exist unless *force* is True.
     """
     Base.metadata.create_all(bind=engine)
+    from app.db_migrations import ensure_additive_columns
+    ensure_additive_columns(engine)
     db = SessionLocal()
     try:
         counts: dict[str, int] = {}
